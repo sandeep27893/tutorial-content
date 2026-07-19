@@ -1,0 +1,17 @@
+{
+  "id": "compose-basics",
+  "categoryId": "android",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "android-compose-001",
+      "title": "Your First Composable",
+      "order": 1,
+      "content": "Jetpack Compose builds UI declaratively. A @Composable function describes what the UI should look like for a given state, and recomposes automatically when that state changes.",
+      "codeSnippets": [
+        { "language": "kotlin", "code": "@Composable\nfun Greeting(name: String) {\n    Text(text = \"Hello, $name!\")\n}" }
+      ],
+      "tags": ["compose", "ui"]
+    }
+  ]
+}

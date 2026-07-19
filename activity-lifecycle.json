@@ -1,0 +1,22 @@
+# tutorial-content
+
+Content repository for the Android Learning Tutorial app. Served via
+raw.githubusercontent.com — no backend server needed.
+
+## Structure
+
+- `manifest.json` — index of all categories and files, with version numbers.
+  The app always fetches this first.
+- `kotlin/`, `android/` — lesson files, one JSON file per sub-topic.
+- `quiz/` — quiz question files, one per category.
+
+## Publishing new content
+
+1. Edit or add a lesson/quiz JSON file.
+2. Bump that file's `version` number in `manifest.json`.
+3. Bump the top-level `manifest.json` `version` number too — the app checks
+   this first and skips syncing entirely if it hasn't increased.
+4. Commit and push to `main`.
+
+That's it — no app release required. Every user picks up the change next
+time they open the app.
