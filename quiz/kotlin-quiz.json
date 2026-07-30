@@ -1,0 +1,25 @@
+{
+  "categoryId": "kotlin",
+  "version": 1,
+  "questions": [
+    {
+      "id": "kt-quiz-001",
+      "question": "Which keyword declares a read-only variable in Kotlin?",
+      "options": ["var", "val", "let", "const"],
+      "correctOptionIndex": 1,
+      "explanation": "val declares a read-only (single-assignment) variable, while var declares a mutable one."
+    },
+    {
+      "id": "kt-quiz-002",
+      "question": "What does the safe call operator ?. do?",
+      "options": [
+        "Throws an exception if null",
+        "Returns null if the receiver is null, otherwise calls the method",
+        "Converts null to an empty string",
+        "Forces a non-null type"
+      ],
+      "correctOptionIndex": 1,
+      "explanation": "?. returns null instead of throwing NullPointerException when the receiver is null."
+    }
+  ]
+}

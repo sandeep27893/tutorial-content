@@ -1,0 +1,13 @@
+{
+  "categoryId": "android",
+  "version": 1,
+  "questions": [
+    {
+      "id": "android-quiz-001",
+      "question": "Which lifecycle callback is called when an Activity becomes visible but not yet interactive?",
+      "options": ["onCreate", "onStart", "onResume", "onPause"],
+      "correctOptionIndex": 1,
+      "explanation": "onStart is called when the Activity becomes visible; onResume is called when it becomes interactive."
+    }
+  ]
+}
