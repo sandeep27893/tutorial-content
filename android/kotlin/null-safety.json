@@ -1,0 +1,17 @@
+{
+  "id": "null-safety",
+  "categoryId": "kotlin",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kt-null-001",
+      "title": "Null Safety",
+      "order": 1,
+      "content": "Kotlin's type system distinguishes nullable and non-null types. A String cannot hold null, but String? can. The compiler forces you to handle nulls explicitly.",
+      "codeSnippets": [
+        { "language": "kotlin", "code": "var name: String? = null\nval length = name?.length ?: 0" }
+      ],
+      "tags": ["null-safety"]
+    }
+  ]
+}
