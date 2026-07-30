@@ -1,0 +1,27 @@
+{
+  "id": "basics",
+  "categoryId": "kotlin",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kt-basics-001",
+      "title": "Variables and Data Types",
+      "order": 1,
+      "content": "Kotlin has two ways to declare variables: val (read-only, assigned once) and var (mutable). Kotlin infers types automatically, but you can specify them explicitly.",
+      "codeSnippets": [
+        { "language": "kotlin", "code": "val x: Int = 5\nvar y: String = \"hello\"\ny = \"world\" // OK, var is mutable" }
+      ],
+      "tags": ["basics", "variables"]
+    },
+    {
+      "id": "kt-basics-002",
+      "title": "Functions",
+      "order": 2,
+      "content": "Functions are declared with the fun keyword. Kotlin supports default parameter values, named arguments, and single-expression functions.",
+      "codeSnippets": [
+        { "language": "kotlin", "code": "fun greet(name: String = \"World\"): String = \"Hello, $name!\"" }
+      ],
+      "tags": ["basics", "functions"]
+    }
+  ]
+}
