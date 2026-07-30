@@ -6,7 +6,7 @@
       "id": "kotlin",
       "title": "Kotlin Basics",
       "files": [
-        { "id": "kt_lessons_1", "path": "kotlin_lessons.json", "version": 1 }
+        { "id": "kt_lessons_1", "path": "collections.json", "version": 1 }
       ]
     }
   ]
