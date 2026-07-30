@@ -1,0 +1,17 @@
+{
+  "id": "viewmodel-livedata",
+  "categoryId": "android",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "android-viewmodel-001",
+      "title": "ViewModel Basics",
+      "order": 1,
+      "content": "ViewModel survives configuration changes like screen rotation, holding UI state outside the Activity/Fragment lifecycle so data isn't lost or re-fetched unnecessarily.",
+      "codeSnippets": [
+        { "language": "kotlin", "code": "class MyViewModel : ViewModel() {\n    private val _state = MutableStateFlow(0)\n    val state: StateFlow<Int> = _state\n}" }
+      ],
+      "tags": ["viewmodel", "architecture"]
+    }
+  ]
+}
