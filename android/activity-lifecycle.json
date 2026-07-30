@@ -1,0 +1,17 @@
+{
+  "id": "activity-lifecycle",
+  "categoryId": "android",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "android-lifecycle-001",
+      "title": "Activity Lifecycle",
+      "order": 1,
+      "content": "An Activity moves through onCreate, onStart, onResume, onPause, onStop, and onDestroy. Understanding these callbacks is essential for managing resources correctly.",
+      "codeSnippets": [
+        { "language": "kotlin", "code": "override fun onCreate(savedInstanceState: Bundle?) {\n    super.onCreate(savedInstanceState)\n    // initialize UI\n}" }
+      ],
+      "tags": ["lifecycle", "activity"]
+    }
+  ]
+}
