@@ -1,0 +1,43 @@
+{
+  "id": "kmp-basics",
+  "categoryId": "kotlin-advanced",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "adv-kmp-001",
+      "title": "expect/actual: Sharing Logic, Not UI",
+      "order": 1,
+      "content": "KMP lets you share business logic (networking, data models, repositories, validation) across Android and iOS while keeping native UI on each platform. `expect` declares an API in shared code without an implementation; each platform provides an `actual` implementation. Real scenario: sharing a DateFormatter across Android and iOS, since each platform has different native date APIs (java.time vs Foundation's DateFormatter) but the shared code just needs a consistent interface.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "// commonMain\nexpect class DateFormatter() {\n    fun format(timestampMillis: Long): String\n}\n\n// androidMain\nactual class DateFormatter actual constructor() {\n    actual fun format(timestampMillis: Long): String =\n        java.text.SimpleDateFormat(\"MMM d, yyyy\").format(java.util.Date(timestampMillis))\n}"
+        }
+      ],
+      "tags": [
+        "kmp",
+        "multiplatform",
+        "expect-actual",
+        "advanced"
+      ]
+    },
+    {
+      "id": "adv-kmp-002",
+      "title": "What Belongs in Shared vs Platform Code",
+      "order": 2,
+      "content": "A practical rule most production KMP codebases follow: put networking clients (Ktor client works on both platforms), data models, business/validation logic, and repository implementations in commonMain. Keep UI (Compose Multiplatform is an option, but many teams keep native SwiftUI/Jetpack Compose), platform-specific storage APIs, and anything touching platform SDKs (camera, biometrics, notifications) in platform-specific source sets. This is exactly the LessonRepository/domain-layer split you already have in your Android app - it's the same abstraction KMP asks you to make, just extended across platforms.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "// commonMain - shared everywhere\nclass LessonRepository(private val api: LessonApi, private val db: LessonDatabase) {\n    fun getLessons(categoryId: String): Flow<List<Lesson>> = db.getLessons(categoryId)\n    suspend fun sync() { /* same sync logic on both platforms */ }\n}\n\n// androidMain / iosMain - only the DB driver differs\nactual class LessonDatabase actual constructor(driver: SqlDriver) { /* ... */ }"
+        }
+      ],
+      "tags": [
+        "kmp",
+        "multiplatform",
+        "architecture",
+        "advanced"
+      ]
+    }
+  ]
+}

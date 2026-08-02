@@ -1,0 +1,62 @@
+{
+  "id": "flow-mastery",
+  "categoryId": "kotlin-advanced",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "adv-flow-001",
+      "title": "Cold Flow Fundamentals",
+      "order": 1,
+      "content": "A Flow is cold - the producer block doesn't run until a collector calls collect(). Each new collector re-runs the whole producer independently, unlike a hot stream. Real scenario: a Flow<List<Lesson>> backed by Room's @Query - each screen observing it gets its own independent stream, and Room automatically re-emits whenever the underlying table changes, keeping UI in sync without manual refresh calls.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "@Dao\ninterface LessonDao {\n    @Query(\"SELECT * FROM lessons WHERE categoryId = :categoryId\")\n    fun getLessons(categoryId: String): Flow<List<LessonEntity>>\n    // Room re-emits this Flow automatically on every insert/update/delete\n}"
+        }
+      ],
+      "tags": [
+        "flow",
+        "cold-stream",
+        "room",
+        "advanced"
+      ]
+    },
+    {
+      "id": "adv-flow-002",
+      "title": "Key Operators: debounce, distinctUntilChanged, flatMapLatest",
+      "order": 2,
+      "content": "debounce waits for a pause in emissions before emitting the latest value - essential for search-as-you-type so you don't fire an API call per keystroke. distinctUntilChanged skips consecutive duplicate emissions, preventing unnecessary recompositions. flatMapLatest cancels the previous inner flow when a new value arrives - critical for search, where you want to cancel an in-flight query the moment the user types another character.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val searchResults = searchQuery\n    .debounce(300)\n    .distinctUntilChanged()\n    .flatMapLatest { query ->\n        if (query.isBlank()) flowOf(emptyList())\n        else repository.search(query) // previous search auto-cancelled\n    }\n    .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())"
+        }
+      ],
+      "tags": [
+        "flow",
+        "operators",
+        "search",
+        "advanced"
+      ]
+    },
+    {
+      "id": "adv-flow-003",
+      "title": "StateFlow vs SharedFlow vs Channel",
+      "order": 3,
+      "content": "StateFlow always holds a current value, replays it to new collectors, and conflates rapid updates (only the latest value matters) - perfect for UI state. SharedFlow is more flexible: configurable replay count and no requirement to hold an initial value - good for one-time events like navigation or snackbar triggers, though a common mistake is using SharedFlow(replay=0) but forgetting that if no collector is active when the event fires, it's lost. Channel is for single-consumer, point-to-point communication (like a work queue) rather than broadcast to multiple observers.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "// UI state - always has a current value\nprivate val _uiState = MutableStateFlow(HomeUiState.Loading)\nval uiState: StateFlow<HomeUiState> = _uiState\n\n// one-time events - navigation, snackbars, toasts\nprivate val _events = MutableSharedFlow<UiEvent>()\nval events: SharedFlow<UiEvent> = _events\n\nfun onSaveClicked() = viewModelScope.launch {\n    _events.emit(UiEvent.ShowSnackbar(\"Saved!\"))\n}"
+        }
+      ],
+      "tags": [
+        "flow",
+        "stateflow",
+        "sharedflow",
+        "channel",
+        "advanced"
+      ]
+    }
+  ]
+}

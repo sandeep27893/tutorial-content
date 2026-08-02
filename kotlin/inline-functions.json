@@ -1,0 +1,42 @@
+{
+  "id": "inline-functions",
+  "categoryId": "kotlin-advanced",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "adv-inline-001",
+      "title": "Why inline? Lambda Allocation Cost",
+      "order": 1,
+      "content": "Every lambda that isn't inlined is compiled to an anonymous class instance - in hot code paths (like a function called inside a RecyclerView scroll listener or a tight loop), this means real allocation overhead. Marking a higher-order function `inline` copies the function body directly to the call site at compile time, eliminating both the lambda object allocation and the function call overhead, and also enables non-local returns from within the lambda.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "inline fun <T> measureAndLog(label: String, block: () -> T): T {\n    val start = System.currentTimeMillis()\n    val result = block()\n    Log.d(\"Perf\", \"$label took ${System.currentTimeMillis() - start}ms\")\n    return result\n}\n\nfun loadUsers() = measureAndLog(\"loadUsers\") {\n    return@loadUsers repository.fetchUsers() // non-local return works here\n}"
+        }
+      ],
+      "tags": [
+        "inline",
+        "performance",
+        "advanced"
+      ]
+    },
+    {
+      "id": "adv-inline-002",
+      "title": "crossinline and noinline",
+      "order": 2,
+      "content": "Inside an inline function, if a lambda parameter is passed further into another context (like a Runnable or a coroutine builder) where a non-local return wouldn't make sense, the compiler requires `crossinline` to explicitly forbid non-local returns from that lambda. `noinline` marks a specific lambda parameter to NOT be inlined - useful when you need to store the lambda as a reference (e.g. pass it to another function) rather than inline its call site.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "inline fun runOnUiThread(\n    crossinline action: () -> Unit  // used inside another lambda below\n) {\n    handler.post { action() } // non-local return here would be unsafe\n}\n\ninline fun retryOperation(\n    times: Int,\n    noinline onFailure: (Exception) -> Unit // stored, not inlined\n): List<(Exception) -> Unit> {\n    return List(times) { onFailure } // needs a real function reference\n}"
+        }
+      ],
+      "tags": [
+        "inline",
+        "crossinline",
+        "noinline",
+        "advanced"
+      ]
+    }
+  ]
+}

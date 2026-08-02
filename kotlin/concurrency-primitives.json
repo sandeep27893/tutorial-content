@@ -1,0 +1,43 @@
+{
+  "id": "concurrency-primitives",
+  "categoryId": "kotlin-advanced",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "adv-concurrency-001",
+      "title": "Mutex for Coroutine-Safe Shared State",
+      "order": 1,
+      "content": "@Synchronized blocks a whole OS thread, which is wasteful with coroutines that may be running on a shared thread pool - it can even deadlock a dispatcher. Mutex is coroutine-aware: withLock suspends the coroutine instead of blocking the thread, letting other coroutines use that thread while waiting. Real scenario: an in-memory cache being written to from multiple concurrent network callbacks - Mutex ensures only one coroutine mutates the cache map at a time without blocking threads.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class SafeCache {\n    private val mutex = Mutex()\n    private val cache = mutableMapOf<String, User>()\n\n    suspend fun put(key: String, user: User) = mutex.withLock {\n        cache[key] = user\n    }\n\n    suspend fun get(key: String): User? = mutex.withLock { cache[key] }\n}"
+        }
+      ],
+      "tags": [
+        "concurrency",
+        "mutex",
+        "thread-safety",
+        "advanced"
+      ]
+    },
+    {
+      "id": "adv-concurrency-002",
+      "title": "Channels & select for Producer-Consumer Patterns",
+      "order": 2,
+      "content": "A Channel is like a coroutine-safe BlockingQueue - one coroutine sends, another receives, and it suspends instead of blocking on both ends. `select` lets a coroutine wait on multiple suspending operations simultaneously and react to whichever completes first. Real scenario: a background sync worker reading from multiple sources (local DB changes channel, remote push notification channel) and reacting to whichever event arrives first.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val dbChanges = Channel<Unit>()\nval pushEvents = Channel<Unit>()\n\nsuspend fun syncWorker() {\n    while (true) {\n        select<Unit> {\n            dbChanges.onReceive { syncFromLocal() }\n            pushEvents.onReceive { syncFromRemote() }\n        }\n    }\n}"
+        }
+      ],
+      "tags": [
+        "concurrency",
+        "channel",
+        "select",
+        "advanced"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "id": "dsl-builders",
+  "categoryId": "kotlin-advanced",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "adv-dsl-001",
+      "title": "Lambdas with Receiver",
+      "order": 1,
+      "content": "A lambda with receiver (`T.() -> Unit`) lets the lambda body call methods on T directly, as if it were `this` - this is the mechanism behind `apply`, and behind every Compose/Gradle/Jetpack DSL you've used. It's what makes builder syntax read like configuration rather than function calls. Real scenario: Jetpack Compose's Modifier chain, or building a Retrofit-style request configuration block.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class RequestBuilder {\n    var url: String = \"\"\n    var method: String = \"GET\"\n    val headers = mutableMapOf<String, String>()\n    fun header(key: String, value: String) { headers[key] = value }\n}\n\nfun request(block: RequestBuilder.() -> Unit): RequestBuilder =\n    RequestBuilder().apply(block)\n\nval req = request {\n    url = \"https://api.example.com/users\"\n    method = \"POST\"\n    header(\"Authorization\", \"Bearer token\")\n}"
+        }
+      ],
+      "tags": [
+        "dsl",
+        "lambda-with-receiver",
+        "advanced"
+      ]
+    },
+    {
+      "id": "adv-dsl-002",
+      "title": "@DslMarker: Preventing Scope Leakage",
+      "order": 2,
+      "content": "In nested DSL builders, without @DslMarker an inner lambda can accidentally call methods on an outer receiver, producing confusing bugs. @DslMarker restricts implicit receiver access to only the nearest enclosing scope. Real scenario: a nested UI-building DSL (like Compose's own internals) where you don't want a `Column { Row { /* accidentally calls Column's methods here */ } }` situation.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "@DslMarker\nannotation class LayoutDsl\n\n@LayoutDsl\nclass ColumnScope { fun text(value: String) { /* ... */ } }\n\n@LayoutDsl\nclass RowScope { fun text(value: String) { /* ... */ } }\n\nfun column(block: ColumnScope.() -> Unit) { ColumnScope().block() }\nfun ColumnScope.row(block: RowScope.() -> Unit) { RowScope().block() }\n\ncolumn {\n    text(\"Outer\")\n    row {\n        text(\"Inner\") // only RowScope.text is callable here, not Column's\n    }\n}"
+        }
+      ],
+      "tags": [
+        "dsl",
+        "dslmarker",
+        "advanced"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "id": "contracts-smart-casts",
+  "categoryId": "kotlin-advanced",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "adv-contracts-001",
+      "title": "How Smart Casts Work (and Where They Break)",
+      "order": 1,
+      "content": "The compiler smart-casts a nullable/sealed type after a check (like `if (x != null)` or `is SomeType`) only when it can prove the value can't change between the check and the use - which is why smart casts fail on `var` properties of a class (another thread could mutate it) but work fine on local `val`s. This is a very common real interview question: why does `if (this.field != null) { use(field) }` sometimes fail to smart-cast inside a class, even though it compiles fine for a local variable.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class Example {\n    var name: String? = null // var + mutable = no smart cast guarantee\n\n    fun printName() {\n        if (name != null) {\n            // println(name.length) // won't compile: name could change\n            println(name!!.length)   // needs !! or a local val copy\n        }\n        val localName = name\n        if (localName != null) {\n            println(localName.length) // fine: local val can't change\n        }\n    }\n}"
+        }
+      ],
+      "tags": [
+        "smart-cast",
+        "contracts",
+        "interview",
+        "advanced"
+      ]
+    },
+    {
+      "id": "adv-contracts-002",
+      "title": "Writing Your Own Contracts",
+      "order": 2,
+      "content": "The `contract { }` block (from kotlin.contracts, still experimental API) lets you tell the compiler about the effects of your own functions, so it can smart-cast based on your custom validation function the same way it does for built-in ones like `requireNotNull`. Real scenario: writing your own `isValidUser(user)` check and having the compiler smart-cast `user` as non-null afterward, just like `checkNotNull` does.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "@OptIn(ExperimentalContracts::class)\nfun requireValidUser(user: User?): Boolean {\n    contract {\n        returns(true) implies (user != null)\n    }\n    return user != null && user.isActive\n}\n\nfun greet(user: User?) {\n    if (requireValidUser(user)) {\n        println(user.name) // smart-cast to non-null works here\n    }\n}"
+        }
+      ],
+      "tags": [
+        "contracts",
+        "smart-cast",
+        "advanced"
+      ]
+    }
+  ]
+}
