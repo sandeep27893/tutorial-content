@@ -3,15 +3,23 @@
   "lastUpdated": "2026-07-19T00:00:00Z",
   "categories": [
     {
-      "id": "kotlin",
-      "title": "Kotlin",
-      "files": [
-        { "id": "basics", "path": "kotlin/basics.json", "version": 1 },
-        { "id": "coroutines", "path": "kotlin/coroutines.json", "version": 1 },
-        { "id": "collections", "path": "kotlin/collections.json", "version": 1 },
-        { "id": "null-safety", "path": "kotlin/null-safety.json", "version": 1 }
-      ]
-    },
+      "id": "kotlin-advanced",
+      "title": "Kotlin Advanced",
+     "files": [
+    { "id": "generics-variance", "path": "kotlin-advanced/generics-variance.json", "version": 1 },
+    { "id": "coroutines-deep-dive", "path": "kotlin-advanced/coroutines-deep-dive.json", "version": 1 },
+    { "id": "flow-mastery", "path": "kotlin-advanced/flow-mastery.json", "version": 1 },
+    { "id": "sealed-state-modeling", "path": "kotlin-advanced/sealed-state-modeling.json", "version": 1 },
+    { "id": "delegated-properties", "path": "kotlin-advanced/delegated-properties.json", "version": 1 },
+    { "id": "dsl-builders", "path": "kotlin-advanced/dsl-builders.json", "version": 1 },
+    { "id": "inline-functions", "path": "kotlin-advanced/inline-functions.json", "version": 1 },
+    { "id": "scope-functions", "path": "kotlin-advanced/scope-functions.json", "version": 1 },
+    { "id": "concurrency-primitives", "path": "kotlin-advanced/concurrency-primitives.json", "version": 1 },
+    { "id": "error-handling-patterns", "path": "kotlin-advanced/error-handling-patterns.json", "version": 1 },
+    { "id": "kmp-basics", "path": "kotlin-advanced/kmp-basics.json", "version": 1 },
+    { "id": "contracts-smart-casts", "path": "kotlin-advanced/contracts-smart-casts.json", "version": 1 }
+  ]
+},
     {
       "id": "android",
       "title": "Android",
