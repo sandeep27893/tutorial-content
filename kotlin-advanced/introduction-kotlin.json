@@ -1,0 +1,53 @@
+{
+  "id": "introduction",
+  "categoryId": "kotlin-basics",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "intro-001",
+      "title": "What is Kotlin?",
+      "order": 1,
+      "content": "Kotlin is a modern, statically typed programming language developed by JetBrains. It runs on the JVM and can also compile to JavaScript, Native binaries, and WebAssembly through Kotlin Multiplatform.\n\nWhy Kotlin?\nKotlin was created to solve many shortcomings of Java while remaining fully interoperable with existing Java code. It provides concise syntax, null safety, extension functions, coroutines, and many productivity features.\n\nReal World Analogy\nThink of Java as a reliable family car. Kotlin is the latest model built on the same platform but equipped with automatic transmission, advanced safety systems, and modern conveniences. You can still drive on the same roads, but with much less effort.\n\nAndroid Usage\nGoogle announced Kotlin as an official Android language in 2017. Today, Jetpack Compose, Coroutines, Hilt, Room, and most modern Android libraries are designed with Kotlin first.\n\nReal Usage\nCompanies such as Google, Netflix, Uber, Pinterest, Trello, and many startups use Kotlin in production for Android apps, backend services, and multiplatform development.\n\nSummary\n• Modern programming language\n• Fully interoperable with Java\n• Concise and expressive\n• Official Android language\n• Supports Multiplatform development\n\nInterview Questions\n1. Who developed Kotlin?\n2. Why did Google choose Kotlin?\n3. Can Kotlin call Java code?\n4. What platforms does Kotlin support?\n\nCheat Sheet\nDeveloper : JetBrains\nReleased : 2016\nOfficial Android Language : Yes\nNull Safe : Yes\nSupports JVM : Yes\nSupports Android : Yes\nSupports iOS : Yes (KMP)\nSupports Web : Yes",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun main() {\n    println(\"Welcome to Kotlin\")\n}"
+        }
+      ],
+      "tags": [
+        "beginner",
+        "introduction",
+        "kotlin"
+      ]
+    },
+    {
+      "id": "intro-002",
+      "title": "Why Learn Kotlin?",
+      "order": 2,
+      "content": "Kotlin has become one of the most popular programming languages because it increases developer productivity while reducing bugs.\n\nBenefits\n• Less boilerplate code\n• Null safety\n• Better readability\n• Coroutines for asynchronous programming\n• Extension functions\n• Smart casts\n• Data classes\n• Functional programming support\n\nAndroid Usage\nAlmost every modern Android project uses Kotlin. Jetpack Compose is written specifically for Kotlin and uses many Kotlin language features like higher-order functions, lambdas, and extension functions.\n\nCareer Perspective\nLearning Kotlin opens opportunities in Android development, backend development with Ktor or Spring Boot, Kotlin Multiplatform, desktop applications, and interview preparation.\n\nSummary\nKotlin is easier to write, easier to maintain, and safer than Java in many scenarios.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val language = \"Kotlin\"\nprintln(\"Learning $language is fun!\")"
+        }
+      ],
+      "tags": [
+        "beginner",
+        "career",
+        "advantages"
+      ]
+    },
+    {
+      "id": "intro-003",
+      "title": "Kotlin Roadmap",
+      "order": 3,
+      "content": "This course is designed to take you from absolute beginner to advanced Kotlin developer.\n\nRoadmap\n1. Learn Kotlin Basics\n2. Master Control Flow\n3. Understand Functions\n4. Learn Object-Oriented Programming\n5. Explore Collections\n6. Functional Programming\n7. Advanced Kotlin Features\n8. Coroutines\n9. Flow\n10. Android with Kotlin\n11. Interview Preparation\n\nAdvice\nDo not skip exercises. Every lesson builds on the previous one. Practice each concept by writing code yourself before moving to the next lesson.",
+      "codeSnippets": [],
+      "tags": [
+        "roadmap",
+        "course",
+        "overview"
+      ]
+    }
+  ]
+}
