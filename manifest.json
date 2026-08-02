@@ -6,7 +6,7 @@
       "id": "kotlin-advanced",
       "title": "Kotlin Advanced",
      "files": [
-    { "id": "introduction", "path": "kotlin-advanced/introduction-kotlin.json", "version": 1 },  
+    { "id": "introduction-kotlin", "path": "kotlin-advanced/introduction-kotlin.json", "version": 1 },  
     { "id": "generics-variance", "path": "kotlin-advanced/generics-variance.json", "version": 1 },
     { "id": "coroutines-deep-dive", "path": "kotlin-advanced/coroutines-deep-dive.json", "version": 1 },
     { "id": "flow-mastery", "path": "kotlin-advanced/flow-mastery.json", "version": 1 },
