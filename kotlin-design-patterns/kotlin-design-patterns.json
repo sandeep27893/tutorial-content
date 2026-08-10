@@ -1,0 +1,183 @@
+{
+  "id": "kotlin-design-patterns",
+  "categoryId": "kotlin-design-patterns",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kotlin-design-patterns-singleton",
+      "title": "Singleton Pattern",
+      "order": 1,
+      "content": "Kotlin's object keyword is a built-in, idiomatic Singleton, lazily and thread-safely instantiated. Real scenario: a single shared analytics client used app-wide.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "object AnalyticsClient {\n    fun logEvent(name: String) {}\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-design-patterns",
+        "singleton"
+      ]
+    },
+    {
+      "id": "kotlin-design-patterns-factory",
+      "title": "Factory Pattern",
+      "order": 2,
+      "content": "A factory function centralizes object creation logic, hiding construction complexity. Real scenario: a factory choosing between GitHub-JSON vs Firestore repository implementations based on config.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "object RepositoryFactory {\n    fun create(useFirestore: Boolean): LessonRepository =\n        if (useFirestore) FirestoreLessonRepository() else GitHubLessonRepository()\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-design-patterns",
+        "factory"
+      ]
+    },
+    {
+      "id": "kotlin-design-patterns-builder",
+      "title": "Builder Pattern",
+      "order": 3,
+      "content": "Named/default arguments and DSL lambdas largely replace the classic Java Builder pattern. Real scenario: a RequestBuilder DSL configuring a network request declaratively.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun createUser(name: String, age: Int = 18, isAdmin: Boolean = false) = User(name, age, isAdmin)"
+        }
+      ],
+      "tags": [
+        "kotlin-design-patterns",
+        "builder"
+      ]
+    },
+    {
+      "id": "kotlin-design-patterns-repository",
+      "title": "Repository Pattern",
+      "order": 4,
+      "content": "Abstracts data access behind an interface so callers don't know or care where data comes from. Real scenario: your LessonRepository interface, swappable via a single Hilt @Binds line.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "interface LessonRepository {\n    fun getLessons(categoryId: String): Flow<List<Lesson>>\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-design-patterns",
+        "repository"
+      ]
+    },
+    {
+      "id": "kotlin-design-patterns-strategy",
+      "title": "Strategy Pattern",
+      "order": 5,
+      "content": "Defines interchangeable algorithms behind a common interface, selected at runtime - often just a function type in Kotlin. Real scenario: swapping sorting strategies for a lesson list via a comparator function.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val sortByOrder: (List<Lesson>) -> List<Lesson> = { it.sortedBy { l -> l.order } }"
+        }
+      ],
+      "tags": [
+        "kotlin-design-patterns",
+        "strategy"
+      ]
+    },
+    {
+      "id": "kotlin-design-patterns-observer",
+      "title": "Observer Pattern",
+      "order": 6,
+      "content": "Lets observers react to a subject's state changes - in modern Kotlin, Flow (StateFlow/SharedFlow) IS the idiomatic implementation. Real scenario: your StateFlow<HomeUiState> observed via collectAsState().",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()"
+        }
+      ],
+      "tags": [
+        "kotlin-design-patterns",
+        "observer"
+      ]
+    },
+    {
+      "id": "kotlin-design-patterns-decorator",
+      "title": "Decorator Pattern",
+      "order": 7,
+      "content": "Adds behavior by wrapping an object implementing the same interface - Kotlin's 'by' delegation makes this nearly boilerplate-free. Real scenario: wrapping a base Repository with a CachingRepository decorator.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class CachingRepository(private val base: LessonRepository) : LessonRepository by base"
+        }
+      ],
+      "tags": [
+        "kotlin-design-patterns",
+        "decorator"
+      ]
+    },
+    {
+      "id": "kotlin-design-patterns-adapter",
+      "title": "Adapter Pattern",
+      "order": 8,
+      "content": "Converts one interface into another that client code expects. Real scenario: your LessonEntity.toDomain() mapping functions act as adapters between data-layer and domain-layer shapes.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "private fun LessonEntity.toDomain(): Lesson = Lesson(id = id, title = title, content = content)"
+        }
+      ],
+      "tags": [
+        "kotlin-design-patterns",
+        "adapter"
+      ]
+    },
+    {
+      "id": "kotlin-design-patterns-command",
+      "title": "Command Pattern",
+      "order": 9,
+      "content": "Encapsulates a request as an object or, in Kotlin, often just a function reference. Real scenario: pending sync operations represented as command lambdas, executed in sequence.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val pendingCommands = mutableListOf<suspend () -> Unit>()\npendingCommands.add { repository.syncContent() }"
+        }
+      ],
+      "tags": [
+        "kotlin-design-patterns",
+        "command"
+      ]
+    },
+    {
+      "id": "kotlin-design-patterns-state",
+      "title": "State Pattern",
+      "order": 10,
+      "content": "Lets an object change behavior when its internal state changes - sealed classes/interfaces with when are the idiomatic Kotlin implementation. Real scenario: your sealed HomeUiState directly applies this pattern.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "sealed interface PlayerState {\n    data object Stopped : PlayerState\n    data object Playing : PlayerState\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-design-patterns",
+        "state"
+      ]
+    },
+    {
+      "id": "kotlin-design-patterns-dependency-injection",
+      "title": "Dependency Injection Pattern",
+      "order": 11,
+      "content": "Provides an object's dependencies from outside rather than having it construct them itself, improving testability. Real scenario: your Hilt setup constructor-injecting LessonRepository into ViewModels.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "@HiltViewModel\nclass HomeViewModel @Inject constructor(private val repository: LessonRepository) : ViewModel()"
+        }
+      ],
+      "tags": [
+        "kotlin-design-patterns",
+        "dependency-injection"
+      ]
+    }
+  ]
+}

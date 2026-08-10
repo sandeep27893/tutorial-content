@@ -1,0 +1,135 @@
+{
+  "id": "kotlin-control-flow",
+  "categoryId": "kotlin-control-flow",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kotlin-control-flow-if-expression",
+      "title": "if as an Expression",
+      "order": 1,
+      "content": "Unlike Java, Kotlin's if can be used as an expression that returns a value, replacing the ternary operator entirely. Real scenario: assigning a value directly from an if/else instead of declaring a var and mutating it in each branch.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val max = if (a > b) a else b\n\nval status = if (code == 200) \"OK\" else \"Error $code\""
+        }
+      ],
+      "tags": [
+        "kotlin-control-flow",
+        "if-expression"
+      ]
+    },
+    {
+      "id": "kotlin-control-flow-when-expression",
+      "title": "when Expression",
+      "order": 2,
+      "content": "when replaces Java's switch but is far more powerful - ranges, type checks (is), multiple values per branch, and exhaustive handling over sealed classes. Real scenario: routing a sealed UiState to the right Composable, compiler-enforced.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "when (val state = uiState) {\n    is UiState.Loading -> showSpinner()\n    is UiState.Success -> showData(state.data)\n    is UiState.Error -> showError(state.message)\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-control-flow",
+        "when-expression"
+      ]
+    },
+    {
+      "id": "kotlin-control-flow-for-loop",
+      "title": "for Loop",
+      "order": 3,
+      "content": "Kotlin's for loop iterates over anything with an iterator - ranges, collections, arrays. Real scenario: iterating with index access via withIndex() for staggered list animations.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "for (item in listOf(\"a\", \"b\", \"c\")) println(item)\nfor ((index, item) in listOf(\"x\", \"y\").withIndex()) println(\"$index: $item\")"
+        }
+      ],
+      "tags": [
+        "kotlin-control-flow",
+        "for-loop"
+      ]
+    },
+    {
+      "id": "kotlin-control-flow-while-loop",
+      "title": "while Loop",
+      "order": 4,
+      "content": "while checks its condition before each iteration, running zero or more times. Real scenario: polling a job status endpoint until it reports 'complete'.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "var attempts = 0\nwhile (attempts < maxRetries && !isSuccess()) {\n    attempts++\n    delay(1000)\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-control-flow",
+        "while-loop"
+      ]
+    },
+    {
+      "id": "kotlin-control-flow-do-while",
+      "title": "do-while Loop",
+      "order": 5,
+      "content": "do-while runs the loop body at least once before checking the condition. Real scenario: showing a CLI menu once before checking whether the user chose to exit.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "var choice: String\ndo {\n    println(\"1) Continue  2) Exit\")\n    choice = readLine() ?: \"2\"\n} while (choice != \"2\")"
+        }
+      ],
+      "tags": [
+        "kotlin-control-flow",
+        "do-while"
+      ]
+    },
+    {
+      "id": "kotlin-control-flow-break-continue",
+      "title": "break and continue",
+      "order": 6,
+      "content": "break exits a loop entirely; continue skips to the next iteration. Real scenario: skipping invalid records (continue) and stopping a search loop once a match is found (break).",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "for (record in records) {\n    if (!record.isValid) continue\n    if (record.id == targetId) { found = record; break }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-control-flow",
+        "break-continue"
+      ]
+    },
+    {
+      "id": "kotlin-control-flow-labels",
+      "title": "Labels for Nested Loops",
+      "order": 7,
+      "content": "A label (name@) lets break/continue target an outer loop from inside a nested one. Real scenario: breaking out of both loops of a 2D grid search entirely once a target cell is found.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "outer@ for (row in grid) {\n    for (cell in row) {\n        if (cell == target) break@outer\n    }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-control-flow",
+        "labels"
+      ]
+    },
+    {
+      "id": "kotlin-control-flow-ranges",
+      "title": "Ranges: .., until, downTo, step",
+      "order": 8,
+      "content": "Ranges express a sequence of values: 1..5 (inclusive), 1 until 5 (exclusive), 5 downTo 1 (descending), step n to skip values. Real scenario: generating page numbers for pagination UI.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "for (i in 1..5) print(i)\nfor (i in 1 until 5) print(i)\nfor (i in 5 downTo 1) print(i)\nfor (i in 0..10 step 2) print(\"$i \")"
+        }
+      ],
+      "tags": [
+        "kotlin-control-flow",
+        "ranges"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "id": "kotlin-file-handling",
+  "categoryId": "kotlin-file-handling",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kotlin-file-handling-read-file",
+      "title": "Reading Files",
+      "order": 1,
+      "content": "Kotlin's stdlib adds readText(), readLines(), forEachLine() extensions on File. Real scenario: reading a bundled fallback JSON file from assets before any network sync.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val content = File(path).readText()\nFile(path).forEachLine { line -> processLine(line) }"
+        }
+      ],
+      "tags": [
+        "kotlin-file-handling",
+        "read-file"
+      ]
+    },
+    {
+      "id": "kotlin-file-handling-write-file",
+      "title": "Writing Files",
+      "order": 2,
+      "content": "writeText() and appendText() write/append to a File in one call without manual stream management. Real scenario: writing a local debug log or exporting user data in a CLI tool.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "File(path).writeText(\"Hello, file!\")\nFile(path).appendText(\"\\nAnother line\")"
+        }
+      ],
+      "tags": [
+        "kotlin-file-handling",
+        "write-file"
+      ]
+    },
+    {
+      "id": "kotlin-file-handling-buffered-reader",
+      "title": "BufferedReader",
+      "order": 3,
+      "content": "Wraps a Reader with an internal buffer, reducing I/O operations for line-by-line reading. Real scenario: processing a large CSV file line by line without loading it all into memory.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "File(path).bufferedReader().useLines { lines -> lines.forEach { processLine(it) } }"
+        }
+      ],
+      "tags": [
+        "kotlin-file-handling",
+        "buffered-reader"
+      ]
+    },
+    {
+      "id": "kotlin-file-handling-buffered-writer",
+      "title": "BufferedWriter",
+      "order": 4,
+      "content": "Buffers write operations, reducing disk writes for many small sequential writes. Real scenario: writing many small log entries without a disk write per line.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "File(path).bufferedWriter().use { w -> repeat(1000) { w.write(\"Log entry $it\\n\") } }"
+        }
+      ],
+      "tags": [
+        "kotlin-file-handling",
+        "buffered-writer"
+      ]
+    },
+    {
+      "id": "kotlin-file-handling-serialization",
+      "title": "Serialization Concepts",
+      "order": 5,
+      "content": "Converts an in-memory object to a storable format and back. Real scenario: your Lesson data class serialized to/from JSON when synced and cached locally.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "@Serializable\ndata class Lesson(val id: String, val title: String, val content: String)"
+        }
+      ],
+      "tags": [
+        "kotlin-file-handling",
+        "serialization"
+      ]
+    },
+    {
+      "id": "kotlin-file-handling-json-parsing",
+      "title": "JSON Parsing Basics",
+      "order": 6,
+      "content": "Converting a raw JSON string into structured Kotlin objects. Real scenario: parsing your app's manifest.json response into a ManifestDto.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val file = Json.decodeFromString<LessonFileDto>(jsonString)"
+        }
+      ],
+      "tags": [
+        "kotlin-file-handling",
+        "json-parsing"
+      ]
+    },
+    {
+      "id": "kotlin-file-handling-kotlinx-serialization",
+      "title": "kotlinx.serialization Deep Dive",
+      "order": 7,
+      "content": "Kotlin's official multiplatform serialization library, generating code at compile time via a plugin instead of runtime reflection. Real scenario: powers your app's GitHubContentApi DTOs.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "@Serializable\ndata class ManifestDto(val version: Int, val categories: List<ManifestCategoryDto>)\nval manifest = Json { ignoreUnknownKeys = true }.decodeFromString<ManifestDto>(raw)"
+        }
+      ],
+      "tags": [
+        "kotlin-file-handling",
+        "kotlinx-serialization"
+      ]
+    }
+  ]
+}

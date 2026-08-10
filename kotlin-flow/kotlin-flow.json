@@ -1,0 +1,423 @@
+{
+  "id": "kotlin-flow",
+  "categoryId": "kotlin-flow",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kotlin-flow-flow-introduction",
+      "title": "Introduction to Flow",
+      "order": 1,
+      "content": "Flow is Kotlin's type for asynchronous streams of values, built on coroutines. Real scenario: observing a Room query as Flow<List<Lesson>> that auto-emits on data change.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun getLessons(): Flow<List<Lesson>> = flow { emit(fetchFromDatabase()) }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "flow-introduction"
+      ]
+    },
+    {
+      "id": "kotlin-flow-cold-flow",
+      "title": "Cold Flows",
+      "order": 2,
+      "content": "A cold Flow's producer doesn't run until collect() is called, and each collector triggers an independent run. Real scenario: a network-request Flow re-fetching from scratch per new collector.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val numbers = flow { println(\"Producer started\"); emit(1); emit(2) }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "cold-flow"
+      ]
+    },
+    {
+      "id": "kotlin-flow-hot-flow",
+      "title": "Hot Flows",
+      "order": 3,
+      "content": "A hot Flow (StateFlow, SharedFlow) is active independent of collectors, shared across multiple collectors. Real scenario: a ViewModel's StateFlow keeps its latest value whether or not anything observes it.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "private val _uiState = MutableStateFlow(UiState.Loading)\nval uiState: StateFlow<UiState> = _uiState"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "hot-flow"
+      ]
+    },
+    {
+      "id": "kotlin-flow-flow-builder",
+      "title": "flow { } Builder",
+      "order": 4,
+      "content": "Creates a Flow by calling emit() inside a suspend lambda, full manual control. Real scenario: wrapping a polling API that emits a new status every few seconds until a job completes.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun pollJobStatus(jobId: String): Flow<JobStatus> = flow {\n    while (true) {\n        emit(api.getStatus(jobId))\n        delay(2000)\n    }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "flow-builder"
+      ]
+    },
+    {
+      "id": "kotlin-flow-flow-operators",
+      "title": "Flow Operators Overview",
+      "order": 5,
+      "content": "Flow supports intermediate operators (map, filter, debounce) and terminal operators (collect, first) that consume it. Real scenario: chaining debounce, filter, map before collecting search results.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "searchQuery.debounce(300).filter { it.length >= 2 }.map { it.trim() }.collect { search(it) }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "flow-operators"
+      ]
+    },
+    {
+      "id": "kotlin-flow-collect",
+      "title": "collect (Terminal Operator)",
+      "order": 6,
+      "content": "The fundamental terminal operator that starts consuming a Flow - without it, a cold Flow does nothing. Real scenario: a ViewModel collecting a repository Flow to update UI state.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "viewModelScope.launch {\n    repository.getLessons(id).collect { lessons -> _uiState.value = Success(lessons) }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "collect"
+      ]
+    },
+    {
+      "id": "kotlin-flow-map",
+      "title": "map Operator",
+      "order": 7,
+      "content": "Transforms each emitted value into a new value over time. Real scenario: mapping Flow<List<LessonEntity>> into Flow<List<Lesson>> inside a repository.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun getLessons(id: String) = dao.getLessons(id).map { it.map { e -> e.toDomain() } }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "map"
+      ]
+    },
+    {
+      "id": "kotlin-flow-filter",
+      "title": "filter Operator",
+      "order": 8,
+      "content": "Only lets through emissions matching a predicate. Real scenario: filtering a sensor Flow to only emit readings above a threshold.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "sensorFlow.filter { it.value > threshold }.collect { alertUser(it) }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "filter"
+      ]
+    },
+    {
+      "id": "kotlin-flow-zip",
+      "title": "zip Operator (Flow)",
+      "order": 9,
+      "content": "Combines the latest paired emissions from two Flows, waiting for both. Real scenario: combining user prefs and feature flags Flows into one config object.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "prefsFlow.zip(flagsFlow) { p, f -> Config(p, f) }.collect { applyConfig(it) }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "zip"
+      ]
+    },
+    {
+      "id": "kotlin-flow-combine",
+      "title": "combine Operator",
+      "order": 10,
+      "content": "Emits whenever either source Flow emits, using the latest from each. Real scenario: combining search query and filter settings, re-running search whenever either changes.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "queryFlow.combine(filtersFlow) { q, f -> SearchRequest(q, f) }.collect { search(it) }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "combine"
+      ]
+    },
+    {
+      "id": "kotlin-flow-merge",
+      "title": "merge Operator",
+      "order": 11,
+      "content": "Interleaves emissions from multiple Flows into one stream, in arrival order. Real scenario: merging local DB-change and push-notification event Flows into a single stream.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val allEvents = merge(dbChangesFlow, pushNotificationsFlow)"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "merge"
+      ]
+    },
+    {
+      "id": "kotlin-flow-flatmapconcat",
+      "title": "flatMapConcat",
+      "order": 12,
+      "content": "Maps to inner Flows and collects them sequentially, waiting for each to finish. Real scenario: processing an upload queue where each item finishes before the next starts.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "uploadQueue.flatMapConcat { uploadFile(it) }.collect { logResult(it) }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "flatmapconcat"
+      ]
+    },
+    {
+      "id": "kotlin-flow-flatmaplatest",
+      "title": "flatMapLatest",
+      "order": 13,
+      "content": "Maps to inner Flows, cancelling the previous one when a new outer value arrives. Real scenario: search-as-you-type, abandoning an in-flight search on new keystrokes.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "searchQuery.debounce(300).flatMapLatest { repository.search(it) }.collect { updateUi(it) }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "flatmaplatest"
+      ]
+    },
+    {
+      "id": "kotlin-flow-flatmapmerge",
+      "title": "flatMapMerge",
+      "order": 14,
+      "content": "Maps to inner Flows and collects them all concurrently. Real scenario: fetching details for multiple item IDs in parallel, processing each as it arrives.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "itemIds.flatMapMerge { fetchItemDetails(it) }.collect { displayItem(it) }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "flatmapmerge"
+      ]
+    },
+    {
+      "id": "kotlin-flow-buffer",
+      "title": "buffer Operator",
+      "order": 15,
+      "content": "Lets the emitter run ahead of a slow collector, buffering values instead of throttling to collector speed. Real scenario: a fast sensor-reading Flow while the collector writes slowly to disk.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fastProducerFlow.buffer().collect { slowProcessing(it) }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "buffer"
+      ]
+    },
+    {
+      "id": "kotlin-flow-conflate",
+      "title": "conflate Operator",
+      "order": 16,
+      "content": "Drops intermediate values if the collector is slower, keeping only the latest. Real scenario: a rapidly-updating progress Flow where only the latest percentage matters.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "rapidProgressFlow.conflate().collect { updateProgressBar(it) }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "conflate"
+      ]
+    },
+    {
+      "id": "kotlin-flow-debounce",
+      "title": "debounce Operator",
+      "order": 17,
+      "content": "Waits for a quiet period after the last emission before emitting, resetting on new values. Real scenario: waiting 300ms after typing stops before firing a search query.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "searchQuery.debounce(300).collect { search(it) }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "debounce"
+      ]
+    },
+    {
+      "id": "kotlin-flow-sample",
+      "title": "sample Operator",
+      "order": 18,
+      "content": "Periodically emits the most recent value at a fixed interval, discarding the rest. Real scenario: sampling scroll position every 100ms for analytics instead of every pixel change.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "scrollPositionFlow.sample(100).collect { logScrollPosition(it) }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "sample"
+      ]
+    },
+    {
+      "id": "kotlin-flow-retry",
+      "title": "retry Operator",
+      "order": 19,
+      "content": "Re-subscribes to upstream on exception, up to a specified count or predicate. Real scenario: retrying a flaky network Flow up to 3 times before letting the error propagate.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "networkFlow.retry(3) { it is IOException }.catch { emit(fallback) }.collect { updateUi(it) }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "retry"
+      ]
+    },
+    {
+      "id": "kotlin-flow-retrywhen",
+      "title": "retryWhen Operator",
+      "order": 20,
+      "content": "Gives full control over retry logic via a predicate receiving cause and attempt count. Real scenario: implementing exponential backoff for a flaky API.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "networkFlow.retryWhen { cause, attempt ->\n    if (cause is IOException && attempt < 3) { delay(1000 * (attempt + 1)); true } else false\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "retrywhen"
+      ]
+    },
+    {
+      "id": "kotlin-flow-catch",
+      "title": "catch Operator",
+      "order": 21,
+      "content": "Intercepts exceptions from upstream operators, letting you emit a fallback instead of crashing. Real scenario: catching a network exception and emitting cached data instead.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "networkFlow.catch { emit(cachedFallback()) }.collect { updateUi(it) }"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "catch"
+      ]
+    },
+    {
+      "id": "kotlin-flow-stateflow",
+      "title": "StateFlow",
+      "order": 22,
+      "content": "Always holds a current value, replays it immediately, conflates rapid updates - built for UI state. Real scenario: HomeViewModel's uiState: StateFlow<HomeUiState> always giving current state instantly.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "private val _uiState = MutableStateFlow<HomeUiState>(Loading)\nval uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "stateflow"
+      ]
+    },
+    {
+      "id": "kotlin-flow-sharedflow",
+      "title": "SharedFlow",
+      "order": 23,
+      "content": "More configurable, no required initial value, doesn't conflate by default - suited for one-time events. Real scenario: a SharedFlow<UiEvent> emitting one-time snackbar events.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "private val _events = MutableSharedFlow<UiEvent>()\nval events: SharedFlow<UiEvent> = _events.asSharedFlow()"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "sharedflow"
+      ]
+    },
+    {
+      "id": "kotlin-flow-stateflow-vs-sharedflow",
+      "title": "StateFlow vs SharedFlow: Choosing Correctly",
+      "order": 24,
+      "content": "StateFlow for current state a late collector should see; SharedFlow for one-time events that shouldn't repeat. Real scenario: using StateFlow for events causes navigation to incorrectly re-fire on rotation.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow() // state\nval navigationEvents: SharedFlow<NavEvent> = _navEvents.asSharedFlow() // one-time event"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "stateflow-vs-sharedflow"
+      ]
+    },
+    {
+      "id": "kotlin-flow-channel-flow",
+      "title": "channelFlow",
+      "order": 25,
+      "content": "Lets you emit from multiple coroutines concurrently into one Flow, backed by a Channel internally. Real scenario: wrapping a callback-based SDK pushing updates from multiple threads.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun observeLocation(): Flow<Location> = channelFlow {\n    val listener = LocationListener { trySend(it) }\n    awaitClose { locationManager.removeUpdates(listener) }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "channel-flow"
+      ]
+    },
+    {
+      "id": "kotlin-flow-callbackflow",
+      "title": "callbackFlow",
+      "order": 26,
+      "content": "Purpose-built for wrapping callback-based APIs as a Flow, with awaitClose for cleanup. Real scenario: wrapping a Firebase snapshot listener as Flow<List<Lesson>>, unregistering on cancellation.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun observeLessons(): Flow<List<Lesson>> = callbackFlow {\n    val listener = firestore.collection(\"lessons\").addSnapshotListener { snap, _ ->\n        snap?.let { trySend(it.toObjects(Lesson::class.java)) }\n    }\n    awaitClose { listener.remove() }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-flow",
+        "callbackflow"
+      ]
+    }
+  ]
+}

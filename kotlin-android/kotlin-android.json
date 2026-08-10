@@ -1,0 +1,247 @@
+{
+  "id": "kotlin-android",
+  "categoryId": "kotlin-android",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kotlin-android-kotlin-with-android",
+      "title": "Kotlin as Android's Preferred Language",
+      "order": 1,
+      "content": "Google made Kotlin the preferred Android language in 2019, and most modern Jetpack libraries are Kotlin-first. Real scenario: your app's Compose, Hilt, Room, Flow-based architecture reflects this stack.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "@Composable\nfun LessonScreen(viewModel: LessonViewModel = hiltViewModel()) {}"
+        }
+      ],
+      "tags": [
+        "kotlin-android",
+        "kotlin-with-android"
+      ]
+    },
+    {
+      "id": "kotlin-android-android-ktx",
+      "title": "Android KTX",
+      "order": 2,
+      "content": "KTX extension functions make Android's Java-based framework APIs more idiomatic. Real scenario: sharedPreferences.edit { putString(...) } instead of manual edit()/apply() calls.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "sharedPreferences.edit { putString(\"key\", \"value\") }"
+        }
+      ],
+      "tags": [
+        "kotlin-android",
+        "android-ktx"
+      ]
+    },
+    {
+      "id": "kotlin-android-viewmodel",
+      "title": "ViewModel",
+      "order": 3,
+      "content": "Survives configuration changes by being scoped to the Activity/Fragment lifecycle instead of recreated with the UI. Real scenario: your HomeViewModel/LessonListViewModel pattern exposing StateFlow.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "@HiltViewModel\nclass HomeViewModel @Inject constructor(private val repository: LessonRepository) : ViewModel()"
+        }
+      ],
+      "tags": [
+        "kotlin-android",
+        "viewmodel"
+      ]
+    },
+    {
+      "id": "kotlin-android-livedata",
+      "title": "LiveData",
+      "order": 4,
+      "content": "An older lifecycle-aware observable data holder, predating StateFlow/Compose. Real scenario: recognizing LiveData in legacy codebases, knowing StateFlow is its modern successor.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "private val _lessons = MutableLiveData<List<Lesson>>()\nval lessons: LiveData<List<Lesson>> = _lessons"
+        }
+      ],
+      "tags": [
+        "kotlin-android",
+        "livedata"
+      ]
+    },
+    {
+      "id": "kotlin-android-stateflow-android",
+      "title": "StateFlow in Android Architecture",
+      "order": 5,
+      "content": "The modern standard for exposing UI state, collected via collectAsStateWithLifecycle() to pause when not visible. Real scenario: your HomeScreen composable collecting uiState.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val state by viewModel.uiState.collectAsStateWithLifecycle()"
+        }
+      ],
+      "tags": [
+        "kotlin-android",
+        "stateflow-android"
+      ]
+    },
+    {
+      "id": "kotlin-android-sharedflow-android",
+      "title": "SharedFlow for One-Time Events in Android",
+      "order": 6,
+      "content": "The standard way to model one-time UI events since StateFlow's replay would incorrectly re-trigger them. Real scenario: a navigation event emitted through SharedFlow, collected once.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val navigationEvents: SharedFlow<String> = _navigationEvents.asSharedFlow()"
+        }
+      ],
+      "tags": [
+        "kotlin-android",
+        "sharedflow-android"
+      ]
+    },
+    {
+      "id": "kotlin-android-room",
+      "title": "Room Database",
+      "order": 7,
+      "content": "Jetpack's SQLite abstraction, generating DAO/database code from annotated entities, with built-in Flow support. Real scenario: your app's LessonEntity, LessonDao, and AppDatabase.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "@Dao\ninterface LessonDao {\n    @Query(\"SELECT * FROM lessons WHERE categoryId = :id\")\n    fun getLessons(id: String): Flow<List<LessonEntity>>\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-android",
+        "room"
+      ]
+    },
+    {
+      "id": "kotlin-android-retrofit",
+      "title": "Retrofit",
+      "order": 8,
+      "content": "A popular type-safe HTTP client defining API endpoints as annotated interface methods. Real scenario: recognizing Retrofit's @GET/@POST style in Android-only (non-KMP) codebases.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "interface ApiService {\n    @GET(\"users/{id}\")\n    suspend fun getUser(@Path(\"id\") id: String): User\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-android",
+        "retrofit"
+      ]
+    },
+    {
+      "id": "kotlin-android-workmanager",
+      "title": "WorkManager",
+      "order": 9,
+      "content": "Schedules deferrable, guaranteed background work that runs even if the app is closed. Real scenario: scheduling your app's content sync to run periodically in the background.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class SyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {\n    override suspend fun doWork(): Result {\n        contentSyncManager.syncIfNeeded()\n        return Result.success()\n    }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-android",
+        "workmanager"
+      ]
+    },
+    {
+      "id": "kotlin-android-navigation",
+      "title": "Navigation Component / Compose Navigation",
+      "order": 10,
+      "content": "Manages a back stack of composable destinations with type-safe navigation. Real scenario: your app's AppNavGraph wiring Home -> LessonList -> LessonDetail.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "NavHost(navController, startDestination = \"home\") {\n    composable(\"home\") { HomeScreen() }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-android",
+        "navigation"
+      ]
+    },
+    {
+      "id": "kotlin-android-compose-state",
+      "title": "Compose State Fundamentals",
+      "order": 11,
+      "content": "State<T> is observable - reading it inside a Composable subscribes to recomposition on change. Real scenario: your uiState StateFlow becoming Compose State via collectAsState().",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "var count by remember { mutableStateOf(0) }\nButton(onClick = { count++ }) { Text(\"Count: $count\") }"
+        }
+      ],
+      "tags": [
+        "kotlin-android",
+        "compose-state"
+      ]
+    },
+    {
+      "id": "kotlin-android-remember",
+      "title": "remember",
+      "order": 12,
+      "content": "Caches a value across recompositions within a Composable's lifetime. Real scenario: remembering a filtered list, only recalculated when the source data actually changes.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val sorted = remember(lessons) { lessons.sortedBy { it.order } }"
+        }
+      ],
+      "tags": [
+        "kotlin-android",
+        "remember"
+      ]
+    },
+    {
+      "id": "kotlin-android-remember-saveable",
+      "title": "rememberSaveable",
+      "order": 13,
+      "content": "Like remember but survives configuration changes and process death via the instance state Bundle. Real scenario: preserving typed search input across screen rotation.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "var query by rememberSaveable { mutableStateOf(\"\") }"
+        }
+      ],
+      "tags": [
+        "kotlin-android",
+        "remember-saveable"
+      ]
+    },
+    {
+      "id": "kotlin-android-collect-as-state",
+      "title": "collectAsState / collectAsStateWithLifecycle",
+      "order": 14,
+      "content": "Converts a Flow into Compose State; the lifecycle-aware variant pauses collection when not visible. Real scenario: how HomeScreen observes viewModel.uiState.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val state by viewModel.uiState.collectAsStateWithLifecycle()"
+        }
+      ],
+      "tags": [
+        "kotlin-android",
+        "collect-as-state"
+      ]
+    },
+    {
+      "id": "kotlin-android-snapshot-state",
+      "title": "Snapshot State System",
+      "order": 15,
+      "content": "Compose's State is built on a snapshot system tracking reads/writes to know exactly what to recompose. Real scenario: why mutating a plain var inside a Composable doesn't trigger recomposition.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "var count = 0 // NOT tracked, no recomposition\nvar tracked by remember { mutableStateOf(0) } // tracked, triggers recomposition"
+        }
+      ],
+      "tags": [
+        "kotlin-android",
+        "snapshot-state"
+      ]
+    }
+  ]
+}

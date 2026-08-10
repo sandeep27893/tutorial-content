@@ -1,0 +1,311 @@
+{
+  "id": "kotlin-advanced",
+  "categoryId": "kotlin-advanced",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kotlin-advanced-scope-functions",
+      "title": "Scope Functions Overview",
+      "order": 1,
+      "content": "let, run, with, apply, also execute a block in an object's context, differing in this/it and return value. Real scenario: apply to configure an object, let to safely transform a nullable.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val user = User().apply { name = \"Alice\" }\nval length = nullableName?.let { it.trim().length }"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "scope-functions"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-inline-functions",
+      "title": "Inline Functions",
+      "order": 2,
+      "content": "Marking a higher-order function inline copies its body to the call site, eliminating lambda allocation and enabling non-local returns. Real scenario: performance-sensitive utility functions in hot paths.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "inline fun <T> withLogging(label: String, block: () -> T): T {\n    println(\"Starting $label\")\n    return block()\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "inline-functions"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-crossinline",
+      "title": "crossinline",
+      "order": 3,
+      "content": "Marks a lambda passed into another execution context (like Runnable) where non-local return would be unsafe. Real scenario: passing a lambda into Handler.post from an inline utility.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "inline fun runDelayed(crossinline action: () -> Unit) {\n    Handler(Looper.getMainLooper()).postDelayed({ action() }, 1000)\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "crossinline"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-noinline",
+      "title": "noinline",
+      "order": 4,
+      "content": "Marks a lambda parameter to NOT be inlined, needed when it must be stored as a reference. Real scenario: an inline function executing one lambda immediately and storing another for later use.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "inline fun setup(immediate: () -> Unit, noinline deferred: () -> Unit): () -> Unit {\n    immediate(); return deferred\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "noinline"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-delegation",
+      "title": "Class Delegation (by)",
+      "order": 5,
+      "content": "The 'by' keyword delegates interface implementation to another object, giving composition without forwarding boilerplate. Real scenario: a decorator adding caching on top of a Repository.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class CachingRepository(private val base: Repository) : Repository by base"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "delegation"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-delegated-properties",
+      "title": "Delegated Properties (by)",
+      "order": 6,
+      "content": "A property delegates its get/set logic to a separate object implementing getValue/setValue. Real scenario: a custom delegate transparently reading/writing to DataStore.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "var name: String by Delegates.observable(\"initial\") { _, old, new -> println(\"$old -> $new\") }"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "delegated-properties"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-lazy",
+      "title": "lazy Delegation",
+      "order": 7,
+      "content": "by lazy { } defers expensive initialization until first access, then caches the result, thread-safe by default. Real scenario: lazily initializing a heavyweight parser only if needed.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val parser: JsonParser by lazy { JsonParser() }"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "lazy"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-observable",
+      "title": "Delegates.observable",
+      "order": 8,
+      "content": "Runs a callback on every property change, receiving old and new values. Real scenario: triggering a UI refresh whenever a settings value changes.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "var theme: String by Delegates.observable(\"light\") { _, old, new -> if (old != new) applyTheme(new) }"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "observable"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-vetoable",
+      "title": "Delegates.vetoable",
+      "order": 9,
+      "content": "Like observable, but the callback decides whether the change is accepted. Real scenario: a high-score property that vetoable rejects any decrease attempt on.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "var highScore: Int by Delegates.vetoable(0) { _, old, new -> new > old }"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "vetoable"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-lateinit",
+      "title": "lateinit",
+      "order": 10,
+      "content": "lateinit var declares a non-null property initialized later, useful when a value can't be known at construction time. Real scenario: a ViewModel property injected by DI after construction.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "lateinit var binding: ActivityMainBinding"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "lateinit"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-lazy-initialization",
+      "title": "lateinit vs lazy: When to Use Which",
+      "order": 11,
+      "content": "lateinit for var set externally; lazy for val computed once internally. Real scenario: lateinit for Android View Binding, lazy for an internally-computed expensive object.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "lateinit var binding: ActivityMainBinding\nval viewModel: MainViewModel by lazy { MainViewModel() }"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "lazy-initialization"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-reflection",
+      "title": "Basic Reflection",
+      "order": 12,
+      "content": "kotlin.reflect lets code inspect classes/properties at runtime. Real scenario: a generic logging utility printing an object's class name and properties automatically.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val kClass = user::class\nprintln(kClass.simpleName)"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "reflection"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-annotations",
+      "title": "Annotations",
+      "order": 13,
+      "content": "Annotations attach metadata that tools/frameworks read at compile or runtime. Real scenario: your Room @Entity and @Dao annotations generating database boilerplate at build time.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "@Entity(tableName = \"lessons\")\ndata class LessonEntity(@PrimaryKey val id: String, val title: String)"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "annotations"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-operator-overloading",
+      "title": "Operator Overloading",
+      "order": 14,
+      "content": "Define custom behavior for operators on your own types via functions marked 'operator'. Real scenario: overloading + on a Money class so total = price1 + price2 reads naturally.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "data class Money(val cents: Long) {\n    operator fun plus(other: Money) = Money(cents + other.cents)\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "operator-overloading"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-destructuring",
+      "title": "Destructuring Declarations",
+      "order": 15,
+      "content": "Unpacks an object's properties into separate variables using componentN(). Real scenario: unpacking a Pair, or unpacking Map entries directly in a for loop.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "data class Point(val x: Int, val y: Int)\nval (x, y) = Point(3, 4)"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "destructuring"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-contracts",
+      "title": "Contracts",
+      "order": 16,
+      "content": "The experimental contract { } block lets a function tell the compiler about its own effects, enabling smart casts based on custom validation. Real scenario: a custom isValidUser() check that smart-casts.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "@OptIn(ExperimentalContracts::class)\nfun requireValid(user: User?): Boolean {\n    contract { returns(true) implies (user != null) }\n    return user != null\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "contracts"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-smart-casts",
+      "title": "Smart Casts",
+      "order": 17,
+      "content": "The compiler auto-casts a variable after a check, only when it can prove the value can't change in between. Real scenario: understanding why var class properties often don't smart-cast reliably.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun describe(x: Any) {\n    if (x is String) println(x.length)\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "smart-casts"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-dsl-builders",
+      "title": "DSL Builders",
+      "order": 18,
+      "content": "Lambdas with receiver plus extension functions let you design fluent, type-safe configuration APIs. Real scenario: the mechanism behind Compose's UI tree and Gradle's build.gradle.kts.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun request(block: RequestBuilder.() -> Unit) = RequestBuilder().apply(block).build()"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "dsl-builders"
+      ]
+    },
+    {
+      "id": "kotlin-advanced-context-receivers",
+      "title": "Context Receivers (Experimental)",
+      "order": 19,
+      "content": "An evolving feature letting a function require an implicit context available in scope, without an explicit parameter everywhere. Real scenario: a function requiring an implicit Logger context.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "// experimental syntax\ncontext(Logger)\nfun processOrder(order: Order) { log(\"Processing ${order.id}\") }"
+        }
+      ],
+      "tags": [
+        "kotlin-advanced",
+        "context-receivers"
+      ]
+    }
+  ]
+}

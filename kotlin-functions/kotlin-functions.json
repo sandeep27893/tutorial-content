@@ -1,0 +1,263 @@
+{
+  "id": "kotlin-functions",
+  "categoryId": "kotlin-functions",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kotlin-functions-functions",
+      "title": "Function Basics",
+      "order": 1,
+      "content": "Functions are declared with fun, and every function has a type. Real scenario: extracting repeated validation logic across three screens into a single reusable function.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun isValidEmail(email: String): Boolean {\n    return email.contains(\"@\") && email.contains(\".\")\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "functions"
+      ]
+    },
+    {
+      "id": "kotlin-functions-parameters",
+      "title": "Function Parameters",
+      "order": 2,
+      "content": "Parameters are typed and immutable (val) by default inside the function body. Real scenario: a List<Item> parameter can't be accidentally reassigned mid-function, only mutated if it's a MutableList.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun printTotal(items: List<Item>) {\n    val total = items.sumOf { it.price }\n    println(total)\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "parameters"
+      ]
+    },
+    {
+      "id": "kotlin-functions-return-types",
+      "title": "Return Types",
+      "order": 3,
+      "content": "A function's return type is written after the parameter list; Unit can be omitted. Real scenario: declaring Result<User> explicitly so every caller knows to handle success and failure at compile time.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun fetchUser(id: String): Result<User> = TODO()\nfun logEvent(name: String) { println(\"Event: $name\") }"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "return-types"
+      ]
+    },
+    {
+      "id": "kotlin-functions-default-arguments",
+      "title": "Default Arguments",
+      "order": 4,
+      "content": "Parameters can have default values, letting callers omit them - eliminating most need for overloading. Real scenario: a network function with a default 30s timeout that a slow upload endpoint can override.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun fetchData(url: String, timeoutMs: Long = 30_000): String = TODO()\nfetchData(\"https://api.example.com\")\nfetchData(\"https://api.example.com/upload\", 120_000)"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "default-arguments"
+      ]
+    },
+    {
+      "id": "kotlin-functions-named-arguments",
+      "title": "Named Arguments",
+      "order": 5,
+      "content": "Named arguments let you specify parameters by name, improving readability and letting you skip earlier defaults. Real scenario: calling a function with several boolean flags where named args make each one unambiguous.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun createUser(name: String, isAdmin: Boolean = false, isVerified: Boolean = false) {}\ncreateUser(name = \"Alice\", isVerified = true)"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "named-arguments"
+      ]
+    },
+    {
+      "id": "kotlin-functions-single-expression-functions",
+      "title": "Single-Expression Functions",
+      "order": 6,
+      "content": "When a function body is a single expression, use = instead of { return }. Real scenario: small pure utility functions read more like math notation and are quicker to scan in review.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun square(x: Int) = x * x\nfun isEven(n: Int) = n % 2 == 0"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "single-expression-functions"
+      ]
+    },
+    {
+      "id": "kotlin-functions-local-functions",
+      "title": "Local (Nested) Functions",
+      "order": 7,
+      "content": "You can define a function inside another function, with access to the enclosing function's variables. Real scenario: extracting a small validation helper only needed inside one specific function.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun processOrder(order: Order) {\n    fun validate() = order.items.isNotEmpty() && order.total > 0\n    if (!validate()) throw IllegalArgumentException(\"Invalid order\")\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "local-functions"
+      ]
+    },
+    {
+      "id": "kotlin-functions-infix-functions",
+      "title": "Infix Functions",
+      "order": 8,
+      "content": "A function marked infix can be called without the dot and parentheses, reading like an operator - must have exactly one parameter. Real scenario: this is how Kotlin's own 'to' (Pairs) reads naturally.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "infix fun Int.pow(exponent: Int): Int {\n    var result = 1\n    repeat(exponent) { result *= this }\n    return result\n}\nval result = 2 pow 10"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "infix-functions"
+      ]
+    },
+    {
+      "id": "kotlin-functions-tailrec-functions",
+      "title": "Tail-Recursive Functions",
+      "order": 9,
+      "content": "Marking a function tailrec lets the compiler optimize a tail-position recursive call into a loop, avoiding stack overflow. Real scenario: implementing factorial recursively for very large inputs safely.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "tailrec fun factorial(n: Long, acc: Long = 1): Long =\n    if (n <= 1) acc else factorial(n - 1, n * acc)"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "tailrec-functions"
+      ]
+    },
+    {
+      "id": "kotlin-functions-extension-functions",
+      "title": "Extension Functions",
+      "order": 10,
+      "content": "Extension functions add new functions to existing classes without inheritance or modifying the original source. Real scenario: adding isValidEmail() on String throughout your codebase.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun String.isValidEmail(): Boolean = contains(\"@\") && contains(\".\")\nval valid = \"user@example.com\".isValidEmail()"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "extension-functions"
+      ]
+    },
+    {
+      "id": "kotlin-functions-higher-order-functions",
+      "title": "Higher-Order Functions",
+      "order": 11,
+      "content": "A higher-order function takes another function as a parameter or returns one - the foundation of map/filter and callback APIs. Real scenario: a reusable retry() utility taking the operation as a lambda.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun retry(times: Int, operation: () -> Boolean): Boolean {\n    repeat(times) { if (operation()) return true }\n    return false\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "higher-order-functions"
+      ]
+    },
+    {
+      "id": "kotlin-functions-lambda-expressions",
+      "title": "Lambda Expressions",
+      "order": 12,
+      "content": "A lambda is an anonymous function literal: { params -> body }. If it's the last parameter, it moves outside the parentheses (trailing lambda syntax). Real scenario: filtering lessons by tag with a one-line lambda.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val kotlinLessons = allLessons.filter { it.tags.contains(\"kotlin\") }"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "lambda-expressions"
+      ]
+    },
+    {
+      "id": "kotlin-functions-anonymous-functions",
+      "title": "Anonymous Functions",
+      "order": 13,
+      "content": "An anonymous function has explicit return type and local-only return semantics, unlike a lambda's non-local return. Real scenario: needing a function parameter where return shouldn't exit the outer calling function.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val double = fun(x: Int): Int { return x * 2 }\nlist.forEach(fun(item) {\n    if (item < 0) return\n    println(item)\n})"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "anonymous-functions"
+      ]
+    },
+    {
+      "id": "kotlin-functions-function-types",
+      "title": "Function Types",
+      "order": 14,
+      "content": "A function type like (Int, Int) -> Int describes a function's shape and can be used as a variable/parameter/return type. Real scenario: a strategy pattern swapping calculation strategies at runtime.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "var operation: (Int, Int) -> Int = { a, b -> a + b }\noperation = { a, b -> a * b }"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "function-types"
+      ]
+    },
+    {
+      "id": "kotlin-functions-closures",
+      "title": "Closures",
+      "order": 15,
+      "content": "A lambda can capture variables from its enclosing scope, including mutating a var directly. Real scenario: a counter closure remembering state across multiple invocations for a debouncing utility.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun makeCounter(): () -> Int {\n    var count = 0\n    return { count++ }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "closures"
+      ]
+    },
+    {
+      "id": "kotlin-functions-recursion",
+      "title": "Recursion",
+      "order": 16,
+      "content": "A recursive function calls itself to break a problem into smaller sub-problems, with a base case. Real scenario: traversing a nested comment thread or file directory tree of unknown depth.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun countFiles(folder: Folder): Int {\n    var count = folder.files.size\n    for (sub in folder.subfolders) count += countFiles(sub)\n    return count\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-functions",
+        "recursion"
+      ]
+    }
+  ]
+}

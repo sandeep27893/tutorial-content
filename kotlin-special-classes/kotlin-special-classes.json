@@ -1,0 +1,119 @@
+{
+  "id": "kotlin-special-classes",
+  "categoryId": "kotlin-special-classes",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kotlin-special-classes-data-class",
+      "title": "Data Classes",
+      "order": 1,
+      "content": "A data class auto-generates equals(), hashCode(), toString(), copy(), and componentN() functions. Real scenario: your Lesson and Category domain models are perfect data class candidates.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "data class User(val id: String, val name: String, val age: Int)\nval user2 = user1.copy(age = 31)"
+        }
+      ],
+      "tags": [
+        "kotlin-special-classes",
+        "data-class"
+      ]
+    },
+    {
+      "id": "kotlin-special-classes-enum-class",
+      "title": "Enum Classes",
+      "order": 2,
+      "content": "Defines a fixed set of named constant instances, which can hold their own properties/functions. Real scenario: a SyncStatus enum used in an exhaustive when block.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "enum class SyncStatus(val displayName: String) {\n    IDLE(\"Idle\"), SYNCING(\"Syncing...\"), FAILED(\"Failed\")\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-special-classes",
+        "enum-class"
+      ]
+    },
+    {
+      "id": "kotlin-special-classes-sealed-class",
+      "title": "Sealed Classes",
+      "order": 3,
+      "content": "Restricts a type hierarchy to a known, closed set of subclasses, enabling exhaustive when handling. Real scenario: modeling API results as Success/Error/Loading instead of nullable fields.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "sealed class ApiResult<out T> {\n    data class Success<T>(val data: T) : ApiResult<T>()\n    data class Error(val message: String) : ApiResult<Nothing>()\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-special-classes",
+        "sealed-class"
+      ]
+    },
+    {
+      "id": "kotlin-special-classes-sealed-interface",
+      "title": "Sealed Interfaces",
+      "order": 4,
+      "content": "Like sealed classes but as an interface, useful when subtypes also need to extend a different class. Real scenario: a UiState sealed interface where each variant is also a distinct domain type.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "sealed interface UiState {\n    data object Loading : UiState\n    data class Success(val items: List<Item>) : UiState\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-special-classes",
+        "sealed-interface"
+      ]
+    },
+    {
+      "id": "kotlin-special-classes-value-class",
+      "title": "Value Classes (Inline Classes)",
+      "order": 5,
+      "content": "A value class wraps a single value in a type-safe wrapper optimized away at compile time in most cases. Real scenario: wrapping UserId and ProductId separately so the compiler prevents mixing them up.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "@JvmInline\nvalue class UserId(val value: String)"
+        }
+      ],
+      "tags": [
+        "kotlin-special-classes",
+        "value-class"
+      ]
+    },
+    {
+      "id": "kotlin-special-classes-inline-class",
+      "title": "Inline Classes (Historical Note)",
+      "order": 6,
+      "content": "'inline class' was the original keyword before Kotlin 1.5 introduced 'value class' as the replacement. Real scenario: recognizing 'inline class' in older codebases as functionally the same as value class.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "// old syntax, still valid but deprecated\ninline class Password(val value: String)"
+        }
+      ],
+      "tags": [
+        "kotlin-special-classes",
+        "inline-class"
+      ]
+    },
+    {
+      "id": "kotlin-special-classes-type-alias",
+      "title": "Type Aliases",
+      "order": 7,
+      "content": "typealias gives an existing type a new, more descriptive name for readability - it doesn't create a new type. Real scenario: aliasing a verbose callback type like (Result<User>) -> Unit to UserCallback.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "typealias UserCallback = (Result<User>) -> Unit"
+        }
+      ],
+      "tags": [
+        "kotlin-special-classes",
+        "type-alias"
+      ]
+    }
+  ]
+}

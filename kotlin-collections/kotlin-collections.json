@@ -1,0 +1,327 @@
+{
+  "id": "kotlin-collections",
+  "categoryId": "kotlin-collections",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kotlin-collections-arrays",
+      "title": "Arrays",
+      "order": 1,
+      "content": "Array<T> is fixed-size, mutable-content, with primitive-optimized variants (IntArray, etc.) avoiding boxing. Real scenario: rarely used over Lists, but common when interoperating with Java or numeric code.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val numbers = intArrayOf(1, 2, 3)\nnumbers[0] = 10"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "arrays"
+      ]
+    },
+    {
+      "id": "kotlin-collections-list",
+      "title": "List (Read-Only)",
+      "order": 2,
+      "content": "List<T> is a read-only, ordered collection interface. Real scenario: a repository exposing Flow<List<Lesson>> as read-only so the UI can't accidentally mutate cached data.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val lessons: List<Lesson> = repository.getLessons()"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "list"
+      ]
+    },
+    {
+      "id": "kotlin-collections-mutable-list",
+      "title": "MutableList",
+      "order": 3,
+      "content": "MutableList<T> extends List with add/remove/set operations. Real scenario: building up a list of validation errors as you check each form field.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val errors = mutableListOf<String>()\nif (name.isBlank()) errors.add(\"Name is required\")"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "mutable-list"
+      ]
+    },
+    {
+      "id": "kotlin-collections-set",
+      "title": "Set (Read-Only)",
+      "order": 4,
+      "content": "A Set holds unique elements with no defined order guarantee. Real scenario: tracking completed lesson IDs, where a Set naturally prevents duplicate entries.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val completedIds: Set<String> = setOf(\"kt-001\", \"kt-002\", \"kt-001\")"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "set"
+      ]
+    },
+    {
+      "id": "kotlin-collections-mutable-set",
+      "title": "MutableSet",
+      "order": 5,
+      "content": "MutableSet adds add/remove operations to Set. Real scenario: a tag-selection UI toggling tags on/off without ever creating duplicates.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val selectedTags = mutableSetOf<String>()\nselectedTags.add(\"kotlin\")"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "mutable-set"
+      ]
+    },
+    {
+      "id": "kotlin-collections-map",
+      "title": "Map (Read-Only)",
+      "order": 6,
+      "content": "A Map holds key-value pairs with unique keys, much faster lookup than searching a List. Real scenario: caching lessons by ID for instant lookup on navigation.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val lessonById: Map<String, Lesson> = lessons.associateBy { it.id }"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "map"
+      ]
+    },
+    {
+      "id": "kotlin-collections-mutable-map",
+      "title": "MutableMap",
+      "order": 7,
+      "content": "MutableMap adds put/remove and indexed assignment to Map. Real scenario: an in-flight request cache keyed by URL, deduplicating identical concurrent network calls.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val inFlight = mutableMapOf<String, Deferred<Response>>()"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "mutable-map"
+      ]
+    },
+    {
+      "id": "kotlin-collections-arraylist",
+      "title": "ArrayList",
+      "order": 8,
+      "content": "ArrayList is the concrete resizable-array-backed implementation returned by mutableListOf(). Real scenario: fast random-access list operations for large collections accessed by index.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val list: ArrayList<String> = arrayListOf(\"a\", \"b\", \"c\")"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "arraylist"
+      ]
+    },
+    {
+      "id": "kotlin-collections-hashmap",
+      "title": "HashMap",
+      "order": 9,
+      "content": "HashMap is the concrete implementation typically backing mutableMapOf(), O(1) average get/put, no order guarantee. Real scenario: a lookup cache where iteration order doesn't matter.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val cache: HashMap<String, User> = hashMapOf()"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "hashmap"
+      ]
+    },
+    {
+      "id": "kotlin-collections-linkedhashmap",
+      "title": "LinkedHashMap",
+      "order": 10,
+      "content": "LinkedHashMap preserves insertion order during iteration, unlike plain HashMap. Real scenario: an LRU cache implementation that reorders entries on access.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val orderedCache = LinkedHashMap<String, User>()"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "linkedhashmap"
+      ]
+    },
+    {
+      "id": "kotlin-collections-hashset",
+      "title": "HashSet",
+      "order": 11,
+      "content": "HashSet backs mutableSetOf(), fast O(1) average contains()/add(), no order guarantee. Real scenario: deduplicating a large list of user IDs where order doesn't matter.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val uniqueIds = hashSetOf<String>()"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "hashset"
+      ]
+    },
+    {
+      "id": "kotlin-collections-linkedhashset",
+      "title": "LinkedHashSet",
+      "order": 12,
+      "content": "Combines Set uniqueness with insertion-order iteration. Real scenario: deduplicating recently-viewed lesson IDs while preserving view order.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val recentlyViewed = LinkedHashSet<String>()"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "linkedhashset"
+      ]
+    },
+    {
+      "id": "kotlin-collections-collection-operations",
+      "title": "Common Collection Operations",
+      "order": 13,
+      "content": "Kotlin's stdlib gives dozens of functional operations without external libraries. Real scenario: sorting lessons by order and taking the first 5 for a featured section.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val featured = lessons.sortedBy { it.order }.take(5)"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "collection-operations"
+      ]
+    },
+    {
+      "id": "kotlin-collections-filter-map-reduce",
+      "title": "filter, map, reduce",
+      "order": 14,
+      "content": "filter keeps matching elements, map transforms each, reduce/fold combines into a single result. Real scenario: computing total price of only in-stock cart items.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val total = cartItems.filter { it.inStock }.sumOf { it.price }"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "filter-map-reduce"
+      ]
+    },
+    {
+      "id": "kotlin-collections-groupby",
+      "title": "groupBy",
+      "order": 15,
+      "content": "groupBy partitions a collection into a Map keyed by a selector function. Real scenario: grouping a flat lesson list by categoryId for the home screen's sections.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val byCategory: Map<String, List<Lesson>> = allLessons.groupBy { it.categoryId }"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "groupby"
+      ]
+    },
+    {
+      "id": "kotlin-collections-associate",
+      "title": "associate / associateBy / associateWith",
+      "order": 16,
+      "content": "associate builds a Map from a Pair-returning transform; associateBy keys by a selector; associateWith computes a value per key. Real scenario: associateBy { it.id } for O(1) lookup.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val byId = lessons.associateBy { it.id }"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "associate"
+      ]
+    },
+    {
+      "id": "kotlin-collections-partition",
+      "title": "partition",
+      "order": 17,
+      "content": "Splits a collection into two lists based on a predicate in one pass. Real scenario: splitting quiz answers into correct/incorrect for a results screen.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val (correct, incorrect) = answers.partition { it.isCorrect }"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "partition"
+      ]
+    },
+    {
+      "id": "kotlin-collections-zip",
+      "title": "zip",
+      "order": 18,
+      "content": "Combines two collections element-by-element into Pairs, stopping at the shorter length. Real scenario: pairing question texts with user answers for a review screen.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val paired = questions.zip(answers) { q, a -> \"$q -> $a\" }"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "zip"
+      ]
+    },
+    {
+      "id": "kotlin-collections-flatten",
+      "title": "flatten and flatMap",
+      "order": 19,
+      "content": "flatten collapses nested collections; flatMap does map + flatten in one step. Real scenario: flattening categories' nested lesson lists into one flat list for search.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val allLessons = categories.flatMap { it.lessons }"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "flatten"
+      ]
+    },
+    {
+      "id": "kotlin-collections-sequence",
+      "title": "Sequences (Lazy Collections)",
+      "order": 20,
+      "content": "A Sequence evaluates lazily, element-by-element, avoiding intermediate list allocation on chained operations. Real scenario: processing a huge dataset through filter().map().first() efficiently.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val result = hugeList.asSequence().filter { it.isValid }.map { it.transform() }.first()"
+        }
+      ],
+      "tags": [
+        "kotlin-collections",
+        "sequence"
+      ]
+    }
+  ]
+}

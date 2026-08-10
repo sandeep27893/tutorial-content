@@ -1,0 +1,119 @@
+{
+  "id": "kotlin-kmp",
+  "categoryId": "kotlin-kmp",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kotlin-kmp-kmp-introduction",
+      "title": "Introduction to Kotlin Multiplatform",
+      "order": 1,
+      "content": "KMP shares Kotlin code across Android, iOS, desktop, and web while keeping native UI per platform. Real scenario: sharing your LessonRepository and sync logic with a future iOS app.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class LessonRepository(private val api: LessonApi) {\n    suspend fun syncContent() { /* shared across platforms */ }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-kmp",
+        "kmp-introduction"
+      ]
+    },
+    {
+      "id": "kotlin-kmp-shared-module",
+      "title": "The Shared Module Structure",
+      "order": 2,
+      "content": "commonMain holds platform-agnostic code; androidMain/iosMain provide actual implementations. Real scenario: domain models and repository logic in commonMain, Room swapped for SQLDelight if going multiplatform.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "// shared/src/commonMain/kotlin/ - shared business logic\n// shared/src/androidMain/kotlin/ - Android-specific implementations"
+        }
+      ],
+      "tags": [
+        "kotlin-kmp",
+        "shared-module"
+      ]
+    },
+    {
+      "id": "kotlin-kmp-expect-actual",
+      "title": "expect / actual Mechanism",
+      "order": 3,
+      "content": "expect declares an API in common code; each platform provides an actual matching implementation. Real scenario: a DateFormatter needing java.text on Android but Foundation on iOS.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "expect class DateFormatter() {\n    fun format(timestampMillis: Long): String\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-kmp",
+        "expect-actual"
+      ]
+    },
+    {
+      "id": "kotlin-kmp-shared-business-logic",
+      "title": "Sharing Business Logic",
+      "order": 4,
+      "content": "Validation rules, calculations, and domain models are prime candidates for sharing. Real scenario: sharing your content-sync version-diffing logic between Android and iOS.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class ContentSyncManager(private val api: ContentApi) {\n    suspend fun syncIfNeeded() { /* identical logic everywhere */ }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-kmp",
+        "shared-business-logic"
+      ]
+    },
+    {
+      "id": "kotlin-kmp-shared-network-layer",
+      "title": "Sharing the Network Layer",
+      "order": 5,
+      "content": "Ktor's client works natively on Android and iOS, making it standard for a shared network layer. Real scenario: your GitHubContentApi class could move to commonMain almost unchanged.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class ContentApi(private val client: HttpClient) {\n    suspend fun getManifest(): ManifestDto = client.get(\"$BASE_URL/manifest.json\").body()\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-kmp",
+        "shared-network-layer"
+      ]
+    },
+    {
+      "id": "kotlin-kmp-shared-database",
+      "title": "Sharing the Database Layer",
+      "order": 6,
+      "content": "Room is Android-only, so KMP projects typically use SQLDelight for a shared local database. Real scenario: migrating from Room to SQLDelight to share the data layer with iOS.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "// SQLDelight .sq file generates typed Kotlin query functions from SQL"
+        }
+      ],
+      "tags": [
+        "kotlin-kmp",
+        "shared-database"
+      ]
+    },
+    {
+      "id": "kotlin-kmp-compose-multiplatform",
+      "title": "Compose Multiplatform (UI Sharing)",
+      "order": 7,
+      "content": "Extends Jetpack Compose beyond Android to iOS, desktop, and web, sharing UI code too. Real scenario: an internal admin tool sharing UI across desktop and Android, versus native per-platform UI for consumer apps.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "@Composable\nfun LessonCard(lesson: Lesson) { Card { Text(lesson.title) } }"
+        }
+      ],
+      "tags": [
+        "kotlin-kmp",
+        "compose-multiplatform"
+      ]
+    }
+  ]
+}

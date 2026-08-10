@@ -1,0 +1,343 @@
+{
+  "id": "kotlin-oop",
+  "categoryId": "kotlin-oop",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kotlin-oop-classes",
+      "title": "Classes",
+      "order": 1,
+      "content": "A class bundles state (properties) and behavior (functions) together. Real scenario: a Lesson class with title, content, codeSnippets properties matching your app's data layer.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class Lesson(val id: String, val title: String, val content: String)"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "classes"
+      ]
+    },
+    {
+      "id": "kotlin-oop-objects",
+      "title": "Creating Objects (Instances)",
+      "order": 2,
+      "content": "You instantiate a class by calling its constructor - no 'new' keyword needed. Real scenario: instantiating a Repository implementation and injecting it into a ViewModel.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val repo = LessonRepositoryImpl(dao, syncManager)"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "objects"
+      ]
+    },
+    {
+      "id": "kotlin-oop-properties",
+      "title": "Properties",
+      "order": 3,
+      "content": "Properties combine a field with accessors - Kotlin auto-generates default getters/setters. Real scenario: a computed displayName property combining firstName and lastName.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class User(val firstName: String, val lastName: String) {\n    val displayName get() = \"$firstName $lastName\"\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "properties"
+      ]
+    },
+    {
+      "id": "kotlin-oop-getters-setters",
+      "title": "Custom Getters and Setters",
+      "order": 4,
+      "content": "Override the default getter/setter to add validation while still using plain field syntax externally. Real scenario: an age property that throws if set to a negative value.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class Person {\n    var age: Int = 0\n        set(value) {\n            require(value >= 0)\n            field = value\n        }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "getters-setters"
+      ]
+    },
+    {
+      "id": "kotlin-oop-constructors",
+      "title": "Constructors Overview",
+      "order": 5,
+      "content": "Kotlin classes have one primary constructor and optionally multiple secondary ones. Real scenario: a primary constructor for simple models, secondary for classes needing multiple valid creation paths.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class Point(val x: Int, val y: Int)"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "constructors"
+      ]
+    },
+    {
+      "id": "kotlin-oop-primary-constructor",
+      "title": "Primary Constructor",
+      "order": 6,
+      "content": "Declared in the class header; val/var-prefixed parameters automatically become properties. Real scenario: a data model where every constructor parameter is also a property, eliminating boilerplate.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class Lesson(val id: String, val title: String, var isBookmarked: Boolean = false)"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "primary-constructor"
+      ]
+    },
+    {
+      "id": "kotlin-oop-secondary-constructor",
+      "title": "Secondary Constructors",
+      "order": 7,
+      "content": "Declared with 'constructor' inside the class body, must delegate to the primary via this(...). Real scenario: building a class either from raw parameters or from a legacy format.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class Point(val x: Int, val y: Int) {\n    constructor(pair: Pair<Int, Int>) : this(pair.first, pair.second)\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "secondary-constructor"
+      ]
+    },
+    {
+      "id": "kotlin-oop-init-block",
+      "title": "init Block",
+      "order": 8,
+      "content": "init blocks run as part of primary constructor execution, useful for validation logic. Real scenario: validating a discount percentage is between 0 and 100 at construction time.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class Discount(val percentage: Int) {\n    init { require(percentage in 0..100) }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "init-block"
+      ]
+    },
+    {
+      "id": "kotlin-oop-inheritance",
+      "title": "Inheritance",
+      "order": 9,
+      "content": "Classes are final by default - mark 'open' to allow subclassing, a deliberate design favoring explicit API design. Real scenario: an open BaseViewModel providing shared loading-state logic.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "open class Animal(val name: String) {\n    open fun makeSound() = println(\"...\")\n}\nclass Dog(name: String) : Animal(name) {\n    override fun makeSound() = println(\"Woof!\")\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "inheritance"
+      ]
+    },
+    {
+      "id": "kotlin-oop-overriding",
+      "title": "Method Overriding",
+      "order": 10,
+      "content": "A subclass overrides an open/abstract member using 'override', mandatory in Kotlin unlike Java's optional @Override. Real scenario: overriding equals()/hashCode() on a class used as a Map key.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "open class Shape { open fun area(): Double = 0.0 }\nclass Circle(val radius: Double) : Shape() {\n    override fun area() = Math.PI * radius * radius\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "overriding"
+      ]
+    },
+    {
+      "id": "kotlin-oop-polymorphism",
+      "title": "Polymorphism",
+      "order": 11,
+      "content": "A base-typed variable can hold any subtype instance, dispatching to the actual runtime type's implementation. Real scenario: a List<Shape> computing correct area() per shape without manual type-checking.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val shapes: List<Shape> = listOf(Circle(2.0), Square(3.0))\nval total = shapes.sumOf { it.area() }"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "polymorphism"
+      ]
+    },
+    {
+      "id": "kotlin-oop-abstraction",
+      "title": "Abstraction",
+      "order": 12,
+      "content": "Abstraction exposes only what's necessary while hiding implementation details, via interfaces/abstract classes. Real scenario: a PaymentProcessor interface hiding whether it's Stripe, PayPal, or a mock.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "interface PaymentProcessor {\n    fun processPayment(amount: Double): Boolean\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "abstraction"
+      ]
+    },
+    {
+      "id": "kotlin-oop-encapsulation",
+      "title": "Encapsulation",
+      "order": 13,
+      "content": "Encapsulation restricts direct access to internal state, exposing controlled access instead. Real scenario: a BankAccount where balance has a private setter, only modifiable via deposit()/withdraw().",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class BankAccount(initialBalance: Double) {\n    var balance = initialBalance\n        private set\n    fun deposit(amount: Double) { balance += amount }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "encapsulation"
+      ]
+    },
+    {
+      "id": "kotlin-oop-visibility-modifiers",
+      "title": "Visibility Modifiers",
+      "order": 14,
+      "content": "public (default), private, protected, and internal control member visibility. Real scenario: marking a Repository implementation internal so only your app module can instantiate it directly.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "internal class LessonRepositoryImpl : LessonRepository\nprivate fun helperFunction() {}"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "visibility-modifiers"
+      ]
+    },
+    {
+      "id": "kotlin-oop-interfaces",
+      "title": "Interfaces",
+      "order": 15,
+      "content": "Interfaces define a contract classes must fulfill, and can include default implementations. Real scenario: your LessonRepository interface, letting you swap implementations without touching ViewModels.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "interface LessonRepository {\n    fun getLessons(categoryId: String): Flow<List<Lesson>>\n    fun logAccess() { println(\"Accessed\") }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "interfaces"
+      ]
+    },
+    {
+      "id": "kotlin-oop-abstract-classes",
+      "title": "Abstract Classes",
+      "order": 16,
+      "content": "Can't be instantiated directly, may contain both abstract and concrete members. Real scenario: an abstract BaseSyncWorker providing shared retry logic while subclasses implement performSync().",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "abstract class BaseSyncWorker {\n    abstract suspend fun performSync()\n    fun runWithRetry() { /* shared logic */ }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "abstract-classes"
+      ]
+    },
+    {
+      "id": "kotlin-oop-nested-class",
+      "title": "Nested Classes",
+      "order": 17,
+      "content": "A class declared inside another, without a reference to the outer instance. Real scenario: grouping a small Config helper class only relevant inside its containing class.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class NetworkClient {\n    class Config(val timeout: Long, val retries: Int)\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "nested-class"
+      ]
+    },
+    {
+      "id": "kotlin-oop-inner-class",
+      "title": "Inner Classes",
+      "order": 18,
+      "content": "Marking a nested class 'inner' gives it implicit access to the enclosing instance. Real scenario: a RecyclerView ViewHolder accessing the outer Adapter's click listener directly.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class LessonAdapter(private val onClick: (Lesson) -> Unit) {\n    inner class ViewHolder {\n        fun bind(lesson: Lesson) { /* can access onClick */ }\n    }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "inner-class"
+      ]
+    },
+    {
+      "id": "kotlin-oop-object-declaration",
+      "title": "object Declaration (Singleton)",
+      "order": 19,
+      "content": "The object keyword creates a class with exactly one lazily-created, thread-safe instance. Real scenario: a single shared NetworkClient instance used app-wide.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "object NetworkClient {\n    val client = HttpClient()\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "object-declaration"
+      ]
+    },
+    {
+      "id": "kotlin-oop-object-expression",
+      "title": "Object Expressions (Anonymous Objects)",
+      "order": 20,
+      "content": "Creates a one-off, anonymous instance on the spot, similar to Java's anonymous inner classes. Real scenario: implementing a click listener interface inline for a single button.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "button.setOnClickListener(object : View.OnClickListener {\n    override fun onClick(v: View?) { println(\"Clicked!\") }\n})"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "object-expression"
+      ]
+    },
+    {
+      "id": "kotlin-oop-companion-object",
+      "title": "Companion Objects",
+      "order": 21,
+      "content": "Attaches static-equivalent members to a class, accessed via the class name. Real scenario: a factory function User.create(dto) or constants scoped specifically to their class.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class User private constructor(val name: String) {\n    companion object {\n        fun create(name: String) = User(name.trim())\n    }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-oop",
+        "companion-object"
+      ]
+    }
+  ]
+}

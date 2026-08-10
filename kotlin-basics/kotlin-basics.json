@@ -1,0 +1,295 @@
+{
+  "id": "kotlin-basics",
+  "categoryId": "kotlin-basics",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kotlin-basics-introduction",
+      "title": "Introduction to Kotlin",
+      "order": 1,
+      "content": "Kotlin is a statically-typed language from JetBrains that runs on the JVM, compiles to JavaScript, and compiles natively via Kotlin/Native - which is why it can share code across Android, iOS, backend, and web. Google made it the preferred language for Android in 2019. Real scenario: a company migrating a legacy Java Android app to Kotlin incrementally, file by file, since Kotlin and Java interoperate seamlessly in the same project.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun main() {\n    println(\"Hello, Kotlin!\")\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "introduction"
+      ]
+    },
+    {
+      "id": "kotlin-basics-setup",
+      "title": "Setting Up Your Environment",
+      "order": 2,
+      "content": "You can run Kotlin via Android Studio (for Android projects), IntelliJ IDEA (for general-purpose Kotlin), or the command-line compiler (kotlinc). For quick experiments without any install, the Kotlin Playground (play.kotlinlang.org) compiles and runs snippets in-browser. Real scenario: prototyping a small algorithm on the Kotlin Playground before pasting it into your Android Studio project, so you're not waiting on a full Gradle build for a 5-line test.",
+      "codeSnippets": [
+        {
+          "language": "bash",
+          "code": "# Compile and run from command line\nkotlinc hello.kt -include-runtime -d hello.jar\njava -jar hello.jar"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "setup"
+      ]
+    },
+    {
+      "id": "kotlin-basics-first-program",
+      "title": "Your First Kotlin Program",
+      "order": 3,
+      "content": "Every Kotlin program needs a main function as its entry point. Unlike Java, main doesn't need to live inside a class, and you don't need to declare String[] args unless you actually use command-line arguments. Real scenario: writing a small command-line utility script (e.g. a build-tooling helper) where Kotlin's terse main() saves boilerplate compared to Java's public static void main(String[] args).",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun main(args: Array<String>) {\n    println(\"Program started with ${args.size} arguments\")\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "first-program"
+      ]
+    },
+    {
+      "id": "kotlin-basics-keywords",
+      "title": "Keywords in Kotlin",
+      "order": 4,
+      "content": "Kotlin reserves certain words (fun, val, var, class, when, is, in, etc.) that can't be used as identifiers. Some are 'soft keywords' (like data, sealed, inline) that only act as keywords in specific contexts and can otherwise be used as normal identifiers. Real scenario: a beginner naming a variable 'data' and being confused why it sometimes works and sometimes doesn't - it's a soft keyword, valid as a name but reserved before 'class' to declare a data class.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val data = \"this is fine as a variable name\"\ndata class User(val name: String) // here 'data' is a keyword modifier"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "keywords"
+      ]
+    },
+    {
+      "id": "kotlin-basics-identifiers",
+      "title": "Identifiers & Naming Rules",
+      "order": 5,
+      "content": "Identifiers (names for variables, functions, classes) must start with a letter or underscore, can contain letters/digits/underscores, and are case-sensitive. Kotlin convention: camelCase for variables/functions, PascalCase for classes, SCREAMING_SNAKE_CASE for top-level constants. Real scenario: code review catching a variable named 'Total_Amount' that violates naming conventions and should be 'totalAmount' to match idiomatic Kotlin style used across the codebase.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val userName = \"Alice\"      // camelCase - variable\nclass UserProfile           // PascalCase - class\nconst val MAX_RETRIES = 3   // SCREAMING_SNAKE_CASE - constant"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "identifiers"
+      ]
+    },
+    {
+      "id": "kotlin-basics-comments",
+      "title": "Comments",
+      "order": 6,
+      "content": "Kotlin supports single-line (//), multi-line (/* */), and KDoc documentation comments (/** */) that IDEs render as hover documentation and tools like Dokka use to generate API docs. Real scenario: documenting a public repository function with KDoc so other engineers on the team see parameter descriptions directly in Android Studio's autocomplete tooltip, without opening the source file.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "/**\n * Fetches a user by ID from the local cache, falling back to network.\n * @param id the unique user identifier\n * @return the User, or null if not found\n */\nfun getUser(id: String): User? { /* ... */ null }"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "comments"
+      ]
+    },
+    {
+      "id": "kotlin-basics-variables",
+      "title": "Variables: val vs var",
+      "order": 7,
+      "content": "val declares a read-only reference (assigned once, like Java's final) - the object it points to can still be mutable internally, but the reference itself can't be reassigned. var declares a mutable reference that can be reassigned. Real scenario: a very common code review rule - default to val everywhere, and only use var when you have a concrete reason the reference needs to change, since immutability reduces bugs from unexpected state mutation, especially in multi-threaded/coroutine code.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val userId: String = \"u123\"   // cannot be reassigned\nvar retryCount = 0            // can be reassigned\nretryCount = retryCount + 1   // OK\n// userId = \"u456\"            // compile error"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "variables"
+      ]
+    },
+    {
+      "id": "kotlin-basics-constants",
+      "title": "Constants (const val)",
+      "order": 8,
+      "content": "const val declares a compile-time constant - the value must be known at compile time (a literal, not a function call result), and it can only be used at the top level or inside an object/companion object, never inside a regular function. This differs from a regular val, which is a runtime-assigned read-only value. Real scenario: defining API base URLs or configuration limits as const val at the top of a file so they're inlined at compile time and visible from Java interop as static final fields.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "const val BASE_URL = \"https://api.example.com\"  // compile-time constant\n\nclass Config {\n    companion object {\n        const val MAX_UPLOAD_SIZE_MB = 10\n    }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "constants"
+      ]
+    },
+    {
+      "id": "kotlin-basics-data-types",
+      "title": "Data Types",
+      "order": 9,
+      "content": "Kotlin's basic types: Int, Long, Short, Byte (integers), Double, Float (decimals), Boolean, Char, String. Unlike Java, there's no primitive/wrapper distinction in your code - Kotlin decides internally whether to use a JVM primitive or a boxed object, optimizing automatically in most cases. Real scenario: choosing Long instead of Int for a timestamp field (System.currentTimeMillis() returns Long) to avoid overflow, since Int maxes out around 2.1 billion.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val age: Int = 30\nval price: Double = 19.99\nval isActive: Boolean = true\nval grade: Char = 'A'\nval timestamp: Long = System.currentTimeMillis()"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "data-types"
+      ]
+    },
+    {
+      "id": "kotlin-basics-type-inference",
+      "title": "Type Inference",
+      "order": 10,
+      "content": "Kotlin infers the type from the assigned value at compile time, so you rarely need to write explicit types for local variables - but function parameters and public API return types often still benefit from explicit types for readability and API stability. Real scenario: a team style guide requiring explicit return types on all public functions (even though Kotlin could infer them), because changing an inferred return type accidentally can silently break every caller.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val count = 10          // inferred as Int\nval price = 19.99       // inferred as Double\nval name = \"Kotlin\"     // inferred as String\n\n// explicit type still recommended for public API clarity\nfun calculateTotal(): Double = 42.0"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "type-inference"
+      ]
+    },
+    {
+      "id": "kotlin-basics-operators",
+      "title": "Operators",
+      "order": 11,
+      "content": "Kotlin has arithmetic (+, -, *, /, %), comparison (==, !=, <, >), logical (&&, ||, !), and assignment operators (+=, -=, etc.), plus special ones like the Elvis operator (?:) and range operator (..). Note that == checks structural equality (calls .equals()) while === checks referential equality - this trips up developers coming from Java, where == on objects checks reference. Real scenario: comparing two data class instances with == correctly returns true if their properties match, without needing to override equals() manually.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val a = User(\"Alice\")\nval b = User(\"Alice\")\nprintln(a == b)   // true - structural equality (data class auto-generates equals)\nprintln(a === b)  // false - different object references"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "operators"
+      ]
+    },
+    {
+      "id": "kotlin-basics-type-conversion",
+      "title": "Type Conversion",
+      "order": 12,
+      "content": "Kotlin has no implicit widening conversions (unlike Java, where int auto-converts to long) - you must explicitly call conversion functions like toInt(), toLong(), toDouble(), toString(). This prevents silent precision-loss bugs. Real scenario: reading a form's text input (always a String) and explicitly converting to Int with toIntOrNull() to safely handle non-numeric user input without crashing.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val input: String = \"42\"\nval number: Int? = input.toIntOrNull()  // null if input isn't a valid number\n\nval longValue: Long = 100          // must convert explicitly, no implicit widening\nval intValue: Int = longValue.toInt()"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "type-conversion"
+      ]
+    },
+    {
+      "id": "kotlin-basics-strings",
+      "title": "Strings",
+      "order": 13,
+      "content": "Kotlin strings are immutable sequences of characters, supporting standard operations (length, substring, split, trim, etc.) plus raw strings (triple-quoted \"\"\"...\"\"\") that don't need escape characters - useful for multi-line text or regex patterns. Real scenario: writing a raw string for a regex pattern that would otherwise need heavy backslash-escaping in a normal string.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val regular = \"Line1\\nLine2\"           // needs escape sequences\nval raw = \"\"\"\n    Line1\n    Line2\n\"\"\".trimIndent()                        // no escaping needed, trimIndent() strips leading whitespace"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "strings"
+      ]
+    },
+    {
+      "id": "kotlin-basics-string-templates",
+      "title": "String Templates",
+      "order": 14,
+      "content": "String templates let you embed expressions directly inside a string using $variableName or ${expression}, avoiding manual concatenation. Real scenario: building a log message or UI label that combines multiple pieces of dynamic data - much more readable than \"Hello \" + name + \", you have \" + count + \" items\".",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val name = \"Alice\"\nval itemCount = 5\nprintln(\"Hello $name, you have ${itemCount} item${if (itemCount != 1) \"s\" else \"\"}\")"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "string-templates"
+      ]
+    },
+    {
+      "id": "kotlin-basics-null-safety",
+      "title": "Null Safety Basics",
+      "order": 15,
+      "content": "Kotlin's type system distinguishes nullable (String?) from non-nullable (String) types at compile time, eliminating most NullPointerExceptions before the app even runs. To use a nullable value, you must explicitly handle the null case (safe call ?., Elvis ?:, or a null check). Real scenario: an API response field that might be missing is modeled as String?, forcing every caller to explicitly decide what happens when it's absent, instead of discovering a crash in production.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "var email: String? = null\n\nval length = email?.length ?: 0          // safe call + Elvis default\n\nif (email != null) {\n    println(email.length)                 // smart-cast to non-null here\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "null-safety"
+      ]
+    },
+    {
+      "id": "kotlin-basics-input-output",
+      "title": "Input & Output",
+      "order": 16,
+      "content": "readLine() reads a line of console input (returns String?, since input could be null/EOF); println()/print() write to standard output. This is mostly relevant for command-line Kotlin, not Android (which uses UI input instead), but it's foundational for understanding I/O before moving to file/network I/O later in the course. Real scenario: writing a small command-line calculator tool as a learning exercise before moving to Android-specific input handling.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "print(\"Enter your name: \")\nval name = readLine() ?: \"Guest\"\nprintln(\"Hello, $name!\")"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "input-output"
+      ]
+    },
+    {
+      "id": "kotlin-basics-packages-imports",
+      "title": "Packages & Imports",
+      "order": 17,
+      "content": "Packages organize code into namespaces and must be declared at the top of a file, matching the directory structure by convention. import brings a specific class/function into scope, or you can import a whole package with .*. Real scenario: resolving a naming collision when two libraries both have a class called 'Result', by using an import alias (import com.example.Result as ApiResult) instead of always fully qualifying one of them.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "package com.example.androidlearningapp.data\n\nimport kotlinx.coroutines.flow.Flow\nimport com.example.androidlearningapp.domain.model.Lesson as LessonModel"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "packages-imports"
+      ]
+    },
+    {
+      "id": "kotlin-basics-coding-conventions",
+      "title": "Kotlin Coding Conventions",
+      "order": 18,
+      "content": "Official Kotlin style: 4-space indentation, camelCase for functions/variables, PascalCase for classes, opening braces on the same line, and preferring expression bodies for simple functions. Following these matters beyond aesthetics - consistent style is what makes a codebase reviewable at speed across a team. Real scenario: setting up ktlint or Android Studio's built-in Kotlin formatter in a CI pipeline so every pull request is auto-checked for style violations before a human reviewer even looks at it.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "// preferred: expression body for a simple function\nfun square(x: Int): Int = x * x\n\n// avoid: unnecessary block body for a one-liner\nfun squareVerbose(x: Int): Int {\n    return x * x\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-basics",
+        "coding-conventions"
+      ]
+    }
+  ]
+}

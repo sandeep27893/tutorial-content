@@ -1,0 +1,119 @@
+{
+  "id": "kotlin-performance",
+  "categoryId": "kotlin-performance",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kotlin-performance-memory-management",
+      "title": "Memory Management Basics",
+      "order": 1,
+      "content": "Kotlin/JVM uses automatic garbage collection, but excessive short-lived object creation triggers more frequent GC pauses. Real scenario: avoiding new lambda allocation inside onBindViewHolder called thousands of times per scroll.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "override fun onBindViewHolder(holder: ViewHolder, position: Int) {\n    holder.itemView.setOnClickListener { onClick(items[position]) }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-performance",
+        "memory-management"
+      ]
+    },
+    {
+      "id": "kotlin-performance-inline-performance",
+      "title": "Inline Functions and Performance",
+      "order": 2,
+      "content": "inline eliminates lambda allocation and call overhead by copying the function body to the call site. Real scenario: stdlib's forEach/map on Arrays are inline, avoiding allocation overhead you'd expect from functional style.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "intArray.forEach { value -> process(value) } // compiles like a manual loop"
+        }
+      ],
+      "tags": [
+        "kotlin-performance",
+        "inline-performance"
+      ]
+    },
+    {
+      "id": "kotlin-performance-sequence-performance",
+      "title": "Sequence vs Collection Performance",
+      "order": 3,
+      "content": "List operations are eager, creating full intermediate lists; Sequence is lazy, evaluated per-element. Real scenario: processing 100,000 items through 3 chained operations - Sequence avoids 2 unnecessary intermediate lists.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "largeList.asSequence().map { transform(it) }.filter { it.isValid }.first()"
+        }
+      ],
+      "tags": [
+        "kotlin-performance",
+        "sequence-performance"
+      ]
+    },
+    {
+      "id": "kotlin-performance-collection-performance",
+      "title": "Choosing the Right Collection Type",
+      "order": 4,
+      "content": "Different implementations have different performance characteristics: List for indexed access, HashMap for O(1) lookup. Real scenario: choosing HashMap for a lookup-heavy cache instead of scanning a List.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val userMap = userList.associateBy { it.id } // O(1) lookup instead of O(n) find"
+        }
+      ],
+      "tags": [
+        "kotlin-performance",
+        "collection-performance"
+      ]
+    },
+    {
+      "id": "kotlin-performance-boxing-unboxing",
+      "title": "Boxing and Unboxing",
+      "order": 5,
+      "content": "Primitives stored unboxed when possible, but generic type arguments like List<Int> force boxing. Real scenario: preferring IntArray over List<Int> in performance-critical numeric loops.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val boxed: List<Int> = listOf(1, 2, 3)     // boxed Integer objects\nval unboxed: IntArray = intArrayOf(1, 2, 3) // no boxing"
+        }
+      ],
+      "tags": [
+        "kotlin-performance",
+        "boxing-unboxing"
+      ]
+    },
+    {
+      "id": "kotlin-performance-object-allocation",
+      "title": "Minimizing Unnecessary Object Allocation",
+      "order": 6,
+      "content": "Every allocation has a cost, contributing to GC pressure - prefer reusing objects in hot paths. Real scenario: hoisting a Regex object outside a loop instead of recreating it per iteration.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "private val pattern = Regex(\"[a-z]+\") // created once, reused\nfun isValid(s: String) = s.matches(pattern)"
+        }
+      ],
+      "tags": [
+        "kotlin-performance",
+        "object-allocation"
+      ]
+    },
+    {
+      "id": "kotlin-performance-best-practices",
+      "title": "General Performance Best Practices",
+      "order": 7,
+      "content": "Measure before optimizing, prefer val over var, avoid Sequence on small collections where its overhead outweighs benefits. Real scenario: reaching for Sequence on a 10-item list can actually be slower than plain List.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "// small collection: plain List is typically faster\nsmallList.map { transform(it) }.filter { it.isValid }"
+        }
+      ],
+      "tags": [
+        "kotlin-performance",
+        "best-practices"
+      ]
+    }
+  ]
+}

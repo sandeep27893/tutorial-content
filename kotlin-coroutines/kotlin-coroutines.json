@@ -1,0 +1,391 @@
+{
+  "id": "kotlin-coroutines",
+  "categoryId": "kotlin-coroutines",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kotlin-coroutines-coroutines-introduction",
+      "title": "Introduction to Coroutines",
+      "order": 1,
+      "content": "Coroutines are lightweight, suspendable computations letting you write async code sequentially. Real scenario: fetching from three APIs and combining results without a callback pyramid.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "suspend fun loadProfile(): Profile {\n    val user = fetchUser()\n    val posts = fetchPosts()\n    return Profile(user, posts)\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "coroutines-introduction"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-suspend-functions",
+      "title": "suspend Functions",
+      "order": 2,
+      "content": "The suspend modifier marks a function that can pause without blocking the thread, callable only from another suspend function or a coroutine. Real scenario: a repository's network call callable directly from a ViewModel coroutine.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "suspend fun fetchUser(id: String): User {\n    delay(500)\n    return User(id, \"Alice\")\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "suspend-functions"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-coroutine-builders",
+      "title": "Coroutine Builders Overview",
+      "order": 3,
+      "content": "launch, async, runBlocking are the main ways to start a coroutine, each suited to different cases. Real scenario: launch for fire-and-forget saves, async when you need a result to await later.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "viewModelScope.launch { saveData() }\nval deferred = viewModelScope.async { fetchData() }"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "coroutine-builders"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-launch",
+      "title": "launch Builder",
+      "order": 4,
+      "content": "launch starts a coroutine returning a Job, no result - used for side-effecting work. Real scenario: launching a coroutine to persist a settings change without blocking the UI thread.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun saveSettings(settings: Settings) {\n    viewModelScope.launch { repository.save(settings) }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "launch"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-async-await",
+      "title": "async / await",
+      "order": 5,
+      "content": "async returns a Deferred<T> for concurrent work, retrieved later with .await() without blocking a thread. Real scenario: fetching a user and posts in parallel, roughly halving load time.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "suspend fun loadProfile(): Profile = coroutineScope {\n    val user = async { fetchUser() }\n    val posts = async { fetchPosts() }\n    Profile(user.await(), posts.await())\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "async-await"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-job",
+      "title": "Job",
+      "order": 6,
+      "content": "A Job represents a cancellable unit of work, tracking a coroutine's lifecycle and forming parent-child hierarchies. Real scenario: storing a Job to cancel a specific long upload individually.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val uploadJob = viewModelScope.launch { uploadLargeFile() }\nfun cancelUpload() { uploadJob.cancel() }"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "job"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-deferred",
+      "title": "Deferred",
+      "order": 7,
+      "content": "Deferred<T> is a Job that also holds a future result, returned by async - Kotlin's equivalent of a Future/Promise. Real scenario: kicking off async work early and awaiting the result once other setup completes.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val deferredUser = viewModelScope.async { fetchUser() }\nval user = deferredUser.await()"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "deferred"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-dispatcher",
+      "title": "Coroutine Dispatchers Overview",
+      "order": 8,
+      "content": "A Dispatcher decides which thread(s) a coroutine runs on: Main, IO, Default, Unconfined. Real scenario: switching a network call to IO and the UI update back to Main.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "suspend fun loadAndDisplay() {\n    val data = withContext(Dispatchers.IO) { fetchFromNetwork() }\n    withContext(Dispatchers.Main) { updateUi(data) }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "dispatcher"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-dispatcher-main",
+      "title": "Dispatchers.Main",
+      "order": 9,
+      "content": "Runs coroutines on the UI thread, required for touching Views or Compose state. Real scenario: viewModelScope defaults to Main.immediate, letting you update StateFlow directly.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "viewModelScope.launch {\n    _uiState.value = HomeUiState.Loading\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "dispatcher-main"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-dispatcher-io",
+      "title": "Dispatchers.IO",
+      "order": 10,
+      "content": "Optimized for blocking I/O with a larger thread pool since I/O threads mostly wait rather than compute. Real scenario: running a Room query or network call wrapped in withContext(Dispatchers.IO).",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "suspend fun readFromDisk(path: String) = withContext(Dispatchers.IO) {\n    File(path).readText()\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "dispatcher-io"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-dispatcher-default",
+      "title": "Dispatchers.Default",
+      "order": 11,
+      "content": "Optimized for CPU-intensive work, sized to CPU core count. Real scenario: parsing a very large JSON payload dispatched to Default instead of the main thread.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "suspend fun sortLargeDataset(data: List<Item>) = withContext(Dispatchers.Default) {\n    data.sortedWith(complexComparator)\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "dispatcher-default"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-dispatcher-unconfined",
+      "title": "Dispatchers.Unconfined",
+      "order": 12,
+      "content": "Starts in the caller's thread but isn't confined after suspension - mostly for library internals/testing, generally not recommended for app code. Real scenario: recognizing it in test utilities, avoiding it in business logic.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "// generally avoid in app code\nGlobalScope.launch(Dispatchers.Unconfined) { delay(100) }"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "dispatcher-unconfined"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-coroutine-scope",
+      "title": "CoroutineScope",
+      "order": 13,
+      "content": "Defines the lifecycle boundary for coroutines - cancelling the scope cancels every coroutine launched in it. Real scenario: viewModelScope tied to the ViewModel, auto-cancelling on clear.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class ProfileViewModel : ViewModel() {\n    fun load() { viewModelScope.launch { /* auto-cancelled onCleared() */ } }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "coroutine-scope"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-supervisor-job",
+      "title": "SupervisorJob",
+      "order": 14,
+      "content": "Prevents one child's failure from cancelling siblings, unlike a regular Job. Real scenario: a dashboard fetching 4 widgets where one API failing shouldn't take down the others.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "supervisor-job"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-supervisor-scope",
+      "title": "supervisorScope",
+      "order": 15,
+      "content": "The structured-concurrency-friendly way to get SupervisorJob semantics for a specific block. Real scenario: loading independent screen sections in parallel where each fails gracefully on its own.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "suspend fun loadDashboard() = supervisorScope {\n    launch { runCatching { loadWeather() }.onFailure { showWeatherError() } }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "supervisor-scope"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-structured-concurrency",
+      "title": "Structured Concurrency Principles",
+      "order": 16,
+      "content": "Every coroutine has a clear parent scope and can't outlive it, eliminating leaked background work as a bug category. Real scenario: a coroutineScope block guaranteeing all children finish or cancel together.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "suspend fun loadAll() = coroutineScope {\n    launch { taskA() }\n    launch { taskB() }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "structured-concurrency"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-coroutine-cancellation",
+      "title": "Coroutine Cancellation",
+      "order": 17,
+      "content": "Cancellation is cooperative - a coroutine must check for it to actually stop, which suspend functions do automatically. Real scenario: a computation loop checking ensureActive() periodically.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "suspend fun longComputation() {\n    for (i in 1..1_000_000) {\n        ensureActive()\n    }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "coroutine-cancellation"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-timeouts",
+      "title": "Timeouts: withTimeout / withTimeoutOrNull",
+      "order": 18,
+      "content": "withTimeout throws on expiry; withTimeoutOrNull returns null instead, often more convenient. Real scenario: a 10s network timeout falling back to cached data.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val result = withTimeoutOrNull(10_000) { fetchFromNetwork() } ?: loadFromCache()"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "timeouts"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-exception-handling",
+      "title": "Exception Handling in Coroutines",
+      "order": 19,
+      "content": "launch propagates exceptions to the parent immediately; async defers them until await(). CoroutineExceptionHandler catches uncaught top-level exceptions. Real scenario: an exception in async 'disappearing' until await() is called.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val handler = CoroutineExceptionHandler { _, e -> Log.e(\"App\", e.message ?: \"\") }\nscope.launch(handler) { throw RuntimeException(\"oops\") }"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "exception-handling"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-mutex",
+      "title": "Mutex",
+      "order": 20,
+      "content": "Provides coroutine-safe mutual exclusion by suspending instead of blocking a thread. Real scenario: protecting a shared in-memory cache from concurrent coroutine writes.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val mutex = Mutex()\nvar counter = 0\nsuspend fun increment() = mutex.withLock { counter++ }"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "mutex"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-channel",
+      "title": "Channel",
+      "order": 21,
+      "content": "A coroutine-safe queue for passing values between coroutines, both send and receive suspend. Real scenario: a producer coroutine sending sensor data to a separate consumer coroutine.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "val channel = Channel<Int>()\nlaunch { for (i in 1..5) channel.send(i); channel.close() }\nlaunch { for (v in channel) println(v) }"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "channel"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-select",
+      "title": "select Expression",
+      "order": 22,
+      "content": "Lets a coroutine wait on multiple suspending operations simultaneously, proceeding with whichever completes first. Real scenario: a sync worker reacting to whichever of two event channels fires first.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "select<Unit> {\n    dbChanges.onReceive { syncFromLocal() }\n    pushEvents.onReceive { syncFromRemote() }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "select"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-actor",
+      "title": "Actor Pattern (via Channel)",
+      "order": 23,
+      "content": "Encapsulates mutable state behind a message-processing coroutine, so all mutations happen sequentially, avoiding locks entirely. Real scenario: a single coroutine owning a counter, processed message by message.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun CoroutineScope.counterActor() = actor<CounterMsg> {\n    var counter = 0\n    for (msg in channel) { /* handle msg */ }\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "actor"
+      ]
+    },
+    {
+      "id": "kotlin-coroutines-shared-mutable-state",
+      "title": "Shared Mutable State: The Core Problem",
+      "order": 24,
+      "content": "Concurrent coroutines mutating the same variable without sync causes race conditions. Real scenario: ten coroutines incrementing a shared counter without sync producing a wrong final count - the classic demo.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "// BROKEN - race condition\nvar counter = 0\ncoroutineScope { repeat(10) { launch { repeat(1000) { counter++ } } } }\n// FIXED - atomic update\nval counterFlow = MutableStateFlow(0)\ncounterFlow.update { it + 1 }"
+        }
+      ],
+      "tags": [
+        "kotlin-coroutines",
+        "shared-mutable-state"
+      ]
+    }
+  ]
+}

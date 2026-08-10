@@ -1,0 +1,151 @@
+{
+  "id": "kotlin-generics",
+  "categoryId": "kotlin-generics",
+  "version": 1,
+  "lessons": [
+    {
+      "id": "kotlin-generics-generics-introduction",
+      "title": "Introduction to Generics",
+      "order": 1,
+      "content": "Generics let you write classes/functions that work with any type while preserving compile-time type safety. Real scenario: a single Repository<T> pattern reused for Users, Lessons, and Quizzes.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class Box<T>(val content: T)\nval intBox = Box(42)"
+        }
+      ],
+      "tags": [
+        "kotlin-generics",
+        "generics-introduction"
+      ]
+    },
+    {
+      "id": "kotlin-generics-generic-functions",
+      "title": "Generic Functions",
+      "order": 2,
+      "content": "A function can declare its own type parameter, inferred from arguments at the call site. Real scenario: a generic parseJson<T>(json: String): T helper reused across many data types.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun <T> firstOrDefault(list: List<T>, default: T): T =\n    if (list.isNotEmpty()) list.first() else default"
+        }
+      ],
+      "tags": [
+        "kotlin-generics",
+        "generic-functions"
+      ]
+    },
+    {
+      "id": "kotlin-generics-generic-classes",
+      "title": "Generic Classes",
+      "order": 3,
+      "content": "A class declares type parameters used throughout its properties and methods. Real scenario: your app's ApiResult<T> sealed class, written once, reused for every response type.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "sealed class ApiResult<T> {\n    data class Success<T>(val data: T) : ApiResult<T>()\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-generics",
+        "generic-classes"
+      ]
+    },
+    {
+      "id": "kotlin-generics-generic-constraints",
+      "title": "Generic Constraints (Upper Bounds)",
+      "order": 4,
+      "content": "Restrict a type parameter to subtypes of a bound using <T : Bound>. Real scenario: findMax<T : Comparable<T>> only accepts comparable types, caught at compile time.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun <T : Comparable<T>> findMax(items: List<T>): T =\n    items.reduce { a, b -> if (a > b) a else b }"
+        }
+      ],
+      "tags": [
+        "kotlin-generics",
+        "generic-constraints"
+      ]
+    },
+    {
+      "id": "kotlin-generics-variance",
+      "title": "Variance Overview",
+      "order": 5,
+      "content": "Variance describes how generic types with different arguments relate - invariant by default unless out/in is declared. Real scenario: Repository<out T> allowing Repository<PremiumUser> where Repository<User> is expected.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "class Box<T>(val value: T) // invariant\nclass Producer<out T>(val value: T) // covariant"
+        }
+      ],
+      "tags": [
+        "kotlin-generics",
+        "variance"
+      ]
+    },
+    {
+      "id": "kotlin-generics-covariance",
+      "title": "Covariance (out)",
+      "order": 6,
+      "content": "out T marks a type as covariant, usable only in return positions. Real scenario: a read-only DataSource<out T> where every method returns T, none consume it.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "interface DataSource<out T> {\n    fun fetch(): T\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-generics",
+        "covariance"
+      ]
+    },
+    {
+      "id": "kotlin-generics-contravariance",
+      "title": "Contravariance (in)",
+      "order": 7,
+      "content": "in T marks a type as contravariant, usable only in parameter positions. Real scenario: Comparator<Animal> usable wherever Comparator<Dog> is expected.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "interface EventHandler<in T> {\n    fun handle(event: T)\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-generics",
+        "contravariance"
+      ]
+    },
+    {
+      "id": "kotlin-generics-star-projections",
+      "title": "Star Projections",
+      "order": 8,
+      "content": "SomeType<*> means 'a SomeType of some unknown type', used when you don't need to know the type argument. Real scenario: a logging function accepting any Repository<*>.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "fun describe(repo: Repository<*>) {\n    println(repo::class.simpleName)\n}"
+        }
+      ],
+      "tags": [
+        "kotlin-generics",
+        "star-projections"
+      ]
+    },
+    {
+      "id": "kotlin-generics-reified-generics",
+      "title": "Reified Type Parameters",
+      "order": 9,
+      "content": "inline fun <reified T> preserves type info at the call site, enabling type checks otherwise impossible due to JVM erasure. Real scenario: a type-safe Gson.fromJson<T>() wrapper.",
+      "codeSnippets": [
+        {
+          "language": "kotlin",
+          "code": "inline fun <reified T> List<*>.filterTyped(): List<T> = filterIsInstance<T>()"
+        }
+      ],
+      "tags": [
+        "kotlin-generics",
+        "reified-generics"
+      ]
+    }
+  ]
+}
